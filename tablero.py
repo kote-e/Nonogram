@@ -91,13 +91,42 @@ def drawGrid(screen, blockCant, matriz):
     
 
 
-def drawNumberIndicators(screen, matriz):
+def drawNumberIndicators(screen, blockCant, matriz):
 
-    superficieColumnas = pygame.Surface((409, 95))
+    superficieColumnas = pygame.Surface((410, 95))
     superficieFilas = pygame.Surface((115, 410))
 
-    superficieColumnas.fill(SALMON)
-    superficieFilas.fill(SALMON)
+    superficieColumnas.fill(GREEN)
+    superficieFilas.fill(GREEN)
+
+    margin = 2
+    anchoColumna = (410 - margin*blockCant)/ blockCant  - 1
+    anchoFila = (410 - margin*blockCant)/ blockCant  - 1
+
+    
+    
+    for x in range(blockCant): # dibujar numeros
+        for y in range(blockCant):
+            posC = x + margin + (anchoColumna + margin)*x
+            posF = y + margin + (anchoFila + margin)*y
+            
+            # dibujar columnas
+            rect = pygame.Rect(posC, 0, anchoColumna, 95)
+            pygame.draw.rect(superficieColumnas, SALMON, rect)
+
+            font = pygame.font.Font(None, 36)
+            text = font.render(str(x), True, DARK_BLUE)
+            superficieColumnas.blit(text, (x*40, 0))
+
+
+            # dibujar filas
+            rect = pygame.Rect(0, posF, 115, anchoFila)
+            pygame.draw.rect(superficieFilas, YELLOW, rect)
+
+            # font = pygame.font.Font(None, 36)
+            # text = font.render(str(x), True, DARK_BLUE)
+            # superficieColumnas.blit(text, (x*40, 0))
+
 
     screen.blit(superficieColumnas, (390, 10))
     screen.blit(superficieFilas, (270, 110))
@@ -107,7 +136,7 @@ def drawNumberIndicators(screen, matriz):
 def etapaTablero(screen, blockCant, matriz):
     pygame.display.set_caption('Tablero')
    
-    drawNumberIndicators(screen, matriz)
+    drawNumberIndicators(screen, blockCant, matriz)
     drawGrid(screen, blockCant, matriz)
 
 

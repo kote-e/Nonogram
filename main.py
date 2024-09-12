@@ -1,11 +1,17 @@
 import pygame, sys
 from constantes import *
 from enum import Enum
+from tablero import etapaTablero
 
 class Etapa(Enum):
     INICIO = 1
     NIVELES = 2
     TABLERO = 3
+
+
+# Matriz temporal para probar el tablero
+matrizSize = 10
+matriz = [[0 for i in range(matrizSize)] for j in range(matrizSize)]
 
 
 def main():
@@ -25,7 +31,8 @@ def main():
         # Manejar eventos en el juego en cada funcion por separado
 
         if etapaJuego == Etapa.TABLERO:
-            pass
+            etapaTablero(screen, matrizSize, matriz) # eventos, dibujar, actualizar son manejados internamente
+
 
         pygame.display.flip()
         

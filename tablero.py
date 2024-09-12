@@ -53,7 +53,7 @@ class blockButton():
             pygame.draw.rect(grilla, LETTER_COLOR, self.rect) 
         
         elif valorEnMatriz == 2:       # color para indicar que esta tachado
-            pygame.draw.rect(grilla, (230, 218, 195), self.rect) 
+            pygame.draw.rect(grilla, (222, 218, 191), self.rect) 
         
         elif valorEnMatriz == 0:
             pygame.draw.rect(grilla, (244, 241, 222), self.rect)
@@ -62,12 +62,46 @@ class blockButton():
        
 
 
+def drawGrid(screen, blockCant, matriz):
+    
+    grillaSize = 410
+    grilla = pygame.Surface((grillaSize, grillaSize))
+    grilla.fill(BACKGROUND_COLOR)
+
+    pixInicioX = 300
+    pixInicioY = 110
+
+
+    margin = 2
+
+    blockSize = int((grillaSize - margin*blockCant)/ blockCant  - 1) 
+    step = blockSize + margin
+    
+
+    for x in range(0, blockCant):
+        for y in range(0,blockCant):
+
+            posX = x + margin + step*x
+            posY = y + margin + step*y
+
+            rect = pygame.Rect(posX, posY, blockSize, blockSize)
+            button = blockButton(rect, x, y, matriz)
+
+            button.draw(grilla, 1)
+            
+    
+    screen.blit(grilla, (pixInicioX, pixInicioY))
+    pygame.display.update()
+
+
+
 
 def etapaTablero(screen, blockCant, matriz):
     pygame.display.set_caption('Tablero')
    
     
-    
+    drawGrid(screen, blockCant, matriz)
+
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

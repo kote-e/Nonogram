@@ -20,7 +20,7 @@ def main():
 
     screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     clock = pygame.time.Clock()
-    screen.fill(BACKGROUND_COLOR)
+    screen.fill(GREEN)
     
     jugando = True
     etapaJuego = Etapa.TABLERO

@@ -15,7 +15,7 @@ class blockButton():
 
     def marcar(self, value):
         pos = pygame.mouse.get_pos()
-        posAjustada = (pos[0] - 300, pos[1] - 110)          # ajuste de posicion para que el mouse este en la grilla
+        posAjustada = (pos[0] - 390, pos[1] - 110)          # ajuste de posicion para que el mouse este en la grilla
                              
 
         if(self.rect.collidepoint(posAjustada)):
@@ -87,27 +87,27 @@ def drawGrid(screen, blockCant, matriz):
             button.draw(grilla, 1)
             
     
-    screen.blit(grilla, (300, 110))
+    screen.blit(grilla, (390, 110))
     
 
 
 def drawNumberIndicators(screen, matriz):
 
-    superficieColumnas = pygame.Surface((410, 100))
-    superficieFilas = pygame.Surface((100, 410))
+    superficieColumnas = pygame.Surface((409, 95))
+    superficieFilas = pygame.Surface((115, 410))
 
     superficieColumnas.fill(SALMON)
     superficieFilas.fill(SALMON)
 
-    screen.blit(superficieColumnas, (300, 0))
-    screen.blit(superficieFilas, (100, 110))
+    screen.blit(superficieColumnas, (390, 10))
+    screen.blit(superficieFilas, (270, 110))
     
 
 
 def etapaTablero(screen, blockCant, matriz):
     pygame.display.set_caption('Tablero')
    
-   
+    drawNumberIndicators(screen, matriz)
     drawGrid(screen, blockCant, matriz)
 
 

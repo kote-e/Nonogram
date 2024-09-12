@@ -50,13 +50,13 @@ class blockButton():
         valorEnMatriz = self.blockMatrix[self.fila][self.columna]
 
         if valorEnMatriz == 1:         # color para indicar que esta marcado
-            pygame.draw.rect(grilla, LETTER_COLOR, self.rect) 
+            pygame.draw.rect(grilla, DARK_BLUE, self.rect) 
         
         elif valorEnMatriz == 2:       # color para indicar que esta tachado
-            pygame.draw.rect(grilla, (222, 218, 191), self.rect) 
+            pygame.draw.rect(grilla, DARK_BEIGE, self.rect) 
         
         elif valorEnMatriz == 0:
-            pygame.draw.rect(grilla, (244, 241, 222), self.rect)
+            pygame.draw.rect(grilla, BEIGE, self.rect)
 
         pygame.display.update()
        
@@ -66,10 +66,7 @@ def drawGrid(screen, blockCant, matriz):
     
     grillaSize = 410
     grilla = pygame.Surface((grillaSize, grillaSize))
-    grilla.fill(BACKGROUND_COLOR)
-
-    pixInicioX = 300
-    pixInicioY = 110
+    grilla.fill(GREEN)
 
 
     margin = 2
@@ -90,16 +87,27 @@ def drawGrid(screen, blockCant, matriz):
             button.draw(grilla, 1)
             
     
-    screen.blit(grilla, (pixInicioX, pixInicioY))
-    pygame.display.update()
+    screen.blit(grilla, (300, 110))
+    
 
 
+def drawNumberIndicators(screen, matriz):
+
+    superficieColumnas = pygame.Surface((410, 100))
+    superficieFilas = pygame.Surface((100, 410))
+
+    superficieColumnas.fill(SALMON)
+    superficieFilas.fill(SALMON)
+
+    screen.blit(superficieColumnas, (300, 0))
+    screen.blit(superficieFilas, (100, 110))
+    
 
 
 def etapaTablero(screen, blockCant, matriz):
     pygame.display.set_caption('Tablero')
    
-    
+   
     drawGrid(screen, blockCant, matriz)
 
 
@@ -108,7 +116,7 @@ def etapaTablero(screen, blockCant, matriz):
             pygame.quit()
             sys.exit()
     
-    
+    pygame.display.update()
 
 
 

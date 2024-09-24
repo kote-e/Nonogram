@@ -20,15 +20,15 @@ class Grid():
         
         matriz = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
 
-        self.blockSize = int((self.grillaSize - MARGIN*self.blockCant) / self.blockCant  - 1) 
-        step = self.blockSize + MARGIN
+        self.blockSize = int((self.grillaSize - GRID_MARGIN*self.blockCant) / self.blockCant  - 1) 
+        step = self.blockSize + GRID_MARGIN
         
 
         for x in range(0, self.blockCant):
             for y in range(0, self.blockCant):
 
-                posX = x + MARGIN + step*x
-                posY = y + MARGIN + step*y
+                posX = x + GRID_MARGIN + step*x
+                posY = y + GRID_MARGIN + step*y
 
                 rect = pygame.Rect(posX, posY, self.blockSize, self.blockSize) # calcular la posicion de cada rectangulo
 
@@ -68,14 +68,14 @@ class Grid():
         superficieColumnas.fill(GREEN)
         superficieFilas.fill(GREEN)
 
-        anchoColumna = (410 - MARGIN*blockCant)/ blockCant  - 1
-        anchoFila = (410 - MARGIN*blockCant)/ blockCant  - 1
+        anchoColumna = (410 - GRID_MARGIN*blockCant)/ blockCant  - 1
+        anchoFila = (410 - GRID_MARGIN*blockCant)/ blockCant  - 1
         
         
         for x in range(blockCant): # dibujar numeros
             for y in range(blockCant):
-                posC = x + MARGIN + (anchoColumna + MARGIN)*x
-                posF = y + MARGIN + (anchoFila + MARGIN)*y
+                posC = x + GRID_MARGIN + (anchoColumna + GRID_MARGIN)*x
+                posF = y + GRID_MARGIN + (anchoFila + GRID_MARGIN)*y
                 
                 # dibujar columnas
                 rect = pygame.Rect(posC, 0, anchoColumna, 95)
@@ -84,7 +84,7 @@ class Grid():
                 for i in range(len(matriz[0][x])):
                     font = pygame.font.Font(None, 20)
                     text = font.render(str(matriz[0][x][i]), True, DARK_BLUE)
-                    superficieColumnas.blit(text, (posC - MARGIN + anchoColumna/2, i*20))
+                    superficieColumnas.blit(text, (posC - GRID_MARGIN + anchoColumna/2, i*20))
 
 
                 # dibujar filas

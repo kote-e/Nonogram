@@ -13,41 +13,13 @@ class blockButton():
         self.blockMatrix = blockMatrix
        # self.value = 1 # 1 marcado, 2 cruz
 
-    def marcar(self, value):
-        pos = pygame.mouse.get_pos()
-        posAjustada = (pos[0] - 390, pos[1] - 110)          # ajuste de posicion para que el mouse este en la grilla
-                             
-
-        if(self.rect.collidepoint(posAjustada)):
-
-            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False: 
-                self.clicked = True
-
-                if self.blockMatrix[self.fila][self.columna] == 0: # si no esta marcado marcarlo con value
-                
-                    self.blockMatrix[self.fila][self.columna] = value
-                else:
-                    self.blockMatrix[self.fila][self.columna] = 0  # si esta marcado desmarcarlo
-
-            elif pygame.mouse.get_pressed()[2] == 1 and self.clicked == False: 
-                self.clicked = True
-
-                if self.blockMatrix[self.fila][self.columna] == 0: # si no esta marcado marcarlo con value
-                
-                    self.blockMatrix[self.fila][self.columna] = 2
-                else:
-                    self.blockMatrix[self.fila][self.columna] = 0  # si esta marcado desmarcarlo
-            
-            if pygame.mouse.get_pressed()[0] == 0:
-                self.clicked = False 
-    
-    def draw(self, grilla, value):
-
-
-        self.marcar(value)
-        
+    def draw(self, grilla):
+        #self.marcar(value)
         # value: 0 vacio, 1 marcado, 2 cruz
-        valorEnMatriz = self.blockMatrix[self.fila][self.columna]
+
+       # print(np.matrix(self.matrizValoresBloques))
+        #print("fil: ", self.fila, " col: ", self.columna)
+        valorEnMatriz = self.matrizValoresBloques[self.fila][self.columna]
 
         if valorEnMatriz == 1:         # color para indicar que esta marcado
             pygame.draw.rect(grilla, DARK_BLUE, self.rect) 
@@ -132,6 +104,37 @@ def drawNumberIndicators(screen, blockCant, matriz):
     screen.blit(superficieFilas, (270, 110))
     
 
+def manejarEventos(self, blockSize, matrizValoresBloques):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            elif event.type ==  pygame.MOUSEBUTTONDOWN:
+
+                pos = pygame.mouse.get_pos()
+                grillaPos = self.grilla.getGridPos()
+
+                if (pos[0] > grillaPos[0] and pos[0] < 800) and (pos[1] > grillaPos[1] and pos[1] < 520):
+
+                    print("pos: ", pos)
+                    columna = int((pos[0] - grillaPos[0]) / (blockSize + MARGIN))
+                    fila = int ((pos[1] - grillaPos[1]) / (blockSize + MARGIN))
+
+                    if fila == 10 : fila = 9
+                    if columna == 10: columna = 9
+                     
+                    print("fila: ", fila, " columna: ", columna)
+
+                    if matrizValoresBloques[columna][fila] == 0:
+                    
+                        if pygame.mouse.get_pressed()[0] == 1:   # si no esta marcado marcarlo con value
+                            self.matrizValoresBloques[columna][fila] = 1
+                        elif pygame.mouse.get_pressed()[2] == 1:
+                            self.matrizValoresBloques[columna][fila] = 2
+                    else:
+                        self.matrizValoresBloques[columna][fila] = 0  # si esta marcado desmarcarlo
+
 
 def etapaTablero(screen, blockCant, matriz):
     pygame.display.set_caption('Tablero')
@@ -140,10 +143,7 @@ def etapaTablero(screen, blockCant, matriz):
     drawGrid(screen, blockCant, matriz)
 
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+    manejarEventos(screen, blockCant, matriz)
     
     pygame.display.update()
 

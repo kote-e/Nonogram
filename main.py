@@ -1,7 +1,7 @@
 import pygame, sys
 from constantes import *
 from enum import Enum
-from tablero import etapaTablero
+from Tablero import Tablero
 
 class Etapa(Enum):
     INICIO = 1

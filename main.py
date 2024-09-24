@@ -9,10 +9,13 @@ class Etapa(Enum):
     TABLERO = 3
 
 
-# Matriz temporal para probar el tablero
-matrizSize = 10
-matriz = [[0 for i in range(matrizSize)] for j in range(matrizSize)]
-
+# Valores temporales para probar el tablero
+blockCant = 10
+matrizValoresBloques = [[0 for i in range(blockCant)] for j in range(blockCant)]
+matrizIndices = [ [[1, 2, 2, 0, 0],[3, 4, 5, 6, 0], [3, 4, 5, 6, 0], [3, 4, 5, 6, 0], [3, 4, 5, 6, 0], 
+                   [3, 4, 5, 6, 0], [3, 4, 5, 6, 0], [3, 4, 5, 6, 0], [3, 4, 5, 6, 0], [3, 4, 5, 6, 0]], # columnas
+                  [[1, 2, 2, 0, 0],[3, 4, 5, 6, 0], [3, 4, 5, 6, 0], [3, 4, 5, 6, 0], [3, 4, 5, 6, 0], 
+                   [3, 4, 5, 6, 0], [3, 4, 5, 6, 0], [3, 4, 5, 6, 0], [3, 4, 5, 6, 0], [3, 4, 5, 6, 0]]] # filas
 
 def main():
     global screen, clock, jugando
@@ -21,17 +24,17 @@ def main():
     screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     clock = pygame.time.Clock()
     screen.fill(GREEN)
-    
     jugando = True
     etapaJuego = Etapa.TABLERO
 
+    tablero = Tablero(screen, blockCant, matrizValoresBloques, matrizIndices) # inicializar cada vez que se entra a un puzle distinto
 
     while jugando:
         clock.tick(60)
         # Manejar eventos en el juego en cada funcion por separado
 
         if etapaJuego == Etapa.TABLERO:
-            etapaTablero(screen, matrizSize, matriz) # eventos, dibujar, actualizar son manejados internamente
+            tablero.etapaTablero() # eventos, dibujar, actualizar son manejados internamente
 
 
         pygame.display.flip()

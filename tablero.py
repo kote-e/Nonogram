@@ -17,7 +17,7 @@ class Tablero():
         self.grilla = Grid(blockCant, matrizValoresBloques)
 
 
-    def manejarEventos(self, blockSize, matrizValoresBloques):
+    def manejarEventos(self, matrizValoresBloques):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -30,15 +30,14 @@ class Tablero():
 
                 if (pos[0] > grillaPos[0] and pos[0] < 800) and (pos[1] > grillaPos[1] and pos[1] < 520):
 
-                    print("pos: ", pos)
-                    columna = int((pos[0] - grillaPos[0]) / (blockSize + GRID_MARGIN))
-                    fila = int ((pos[1] - grillaPos[1]) / (blockSize + GRID_MARGIN))
+                   
+                    columna = int((pos[0] - grillaPos[0]) / (self.grilla.getGridSize() / self.blockCant))
+                    fila = int ((pos[1] - grillaPos[1]) / (self.grilla.getGridSize() / self.blockCant))
 
                     if fila == 10 : fila = 9
                     if columna == 10: columna = 9
                      
-                    print("fila: ", fila, " columna: ", columna)
-
+                    
                     if matrizValoresBloques[columna][fila] == 0:
                     
                         if pygame.mouse.get_pressed()[0] == 1:   # si no esta marcado marcarlo con value
@@ -57,7 +56,7 @@ class Tablero():
         #drawNumberIndicators(screen, blockCant, matrizIndices)
         self.grilla.drawGrid(self.screen)
 
-        self.manejarEventos(self.grilla.getBlockSize(), self.matrizValoresBloques)
+        self.manejarEventos(self.matrizValoresBloques)
         
         pygame.display.update()
 

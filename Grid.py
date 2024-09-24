@@ -59,6 +59,8 @@ class Grid():
     def getGridPos(self):
         return self.grillaPos
 
+    def getGridSize(self):  
+        return self.grillaSize
 
     def drawIndices(screen, blockCant, matriz):
 

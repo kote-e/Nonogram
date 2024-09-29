@@ -9,7 +9,8 @@ class Tablero():
     # matrizValoresBloques: contiene los valores de las columnas y filas para saber que boton esta marcado
     # matrizIndices: contiene los valores de los indices que indican los cuadros a marcar para resolver el puzzle
 
-    def __init__(self, screen, blockCant, matrizValoresBloques, matrizIndices):
+    def __init__(self, main, screen, blockCant, matrizValoresBloques, matrizIndices):
+        self.main = main
         self.screen = screen
         self.blockCant = blockCant
         self.matrizValoresBloques = matrizValoresBloques
@@ -48,13 +49,16 @@ class Tablero():
                         self.matrizValoresBloques[columna][fila] = 0  # si esta marcado desmarcarlo
 
 
-                if pos[0] > 10 and pos[0] < 72 and pos[1] > 10 and pos[1] < 50:
-                    pass # funcion para salir del tablero
+                # funcion para salir del tablero
+                elif pos[0] > 10 and pos[0] < 72 and pos[1] > 10 and pos[1] < 50:
+                    print("cambiando a niveles")
+                    self.main.cambiarEtapa(self.main.Etapa.NIVELES)
 
-                if pos[0] > 82 and pos[0] < 172 and pos[1] > 10 and pos[1] < 50:
+
+                # funcion para resetear el tablero
+                elif pos[0] > 82 and pos[0] < 172 and pos[1] > 10 and pos[1] < 50:
                     self.matrizValoresBloques = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
                     self.grilla = Grid(self.blockCant, self.matrizValoresBloques, self.matrizIndices)
-                    # funcion para resetear el tablero
 
     def draw(self):
 
@@ -65,7 +69,6 @@ class Tablero():
 
     def etapaTablero(self):
 
-        pygame.display.set_caption('Tablero')
         self.draw()
     
         #drawNumberIndicators(screen, blockCant, matrizIndices)

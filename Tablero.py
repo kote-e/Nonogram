@@ -14,7 +14,7 @@ class Tablero():
         self.blockCant = blockCant
         self.matrizValoresBloques = matrizValoresBloques
         self.matrizIndices = matrizIndices
-        self.grilla = Grid(blockCant, matrizValoresBloques)
+        self.grilla = Grid(blockCant, matrizValoresBloques, matrizIndices)
 
 
     def manejarEventos(self, matrizValoresBloques):

@@ -44,11 +44,13 @@ class Tablero():
                         if pygame.mouse.get_pressed()[0] == 1:   # si no esta marcado marcarlo con value
                             self.matrizValoresBloques[columna][fila] = 1
                             self.comprobarTablero() # Comprobamos si al marcarlo se resuelve el tablero
+                            self.comprobarTachar(fila, columna)
                         elif pygame.mouse.get_pressed()[2] == 1:
                             self.matrizValoresBloques[columna][fila] = 2
                     else:
                         self.matrizValoresBloques[columna][fila] = 0  # si esta marcado desmarcarlo
                         self.comprobarTablero() # Comprobamos si al desmarcarlo se resuelve el tablero
+                        self.comprobarTachar(fila, columna)
 
     def etapaTablero(self):
 
@@ -82,6 +84,8 @@ class Tablero():
         for i in range(self.blockCant):
             for j in range(self.blockCant):
                 matrizTranspuesta[j][i] = self.matrizValoresBloques[i][j]
+                if matrizTranspuesta[j][i] == 2: #Para evitar errores, matrizTranspuesta solo tendra 0 y 1
+                    matrizTranspuesta[j][i] = 0
         if matrizTranspuesta[numFila] == self.matrizSolucion[numFila]:
             return True
         else:
@@ -91,7 +95,22 @@ class Tablero():
         for i in range(self.blockCant):
             for j in range(self.blockCant):
                 matrizTranspuesta[j][i] = self.matrizValoresBloques[i][j]
+                if matrizTranspuesta[j][i] == 2: #Para evitar errores, matrizTranspuesta solo tendra 0 y 1
+                    matrizTranspuesta[j][i] = 0
         if [matrizTranspuesta[i][numColumna] for i in range(self.blockCant)] == [self.matrizSolucion[i][numColumna] for i in range(self.blockCant)]:
             return True
         else:
             return False
+    def tacharFila(self, numFila):
+        for i in range(self.blockCant):
+            if self.matrizValoresBloques[i][numFila] == 0:
+                self.matrizValoresBloques[i][numFila] = 2
+    def tacharColumna(self, numColumna):
+        for i in range(self.blockCant):
+            if self.matrizValoresBloques[numColumna][i] == 0:
+                self.matrizValoresBloques[numColumna][i] = 2
+    def comprobarTachar(self, numFila, numColumna):
+        if self.comprobarFila(numFila):
+            self.tacharFila(numFila)
+        if self.comprobarColumna(numColumna):
+            self.tacharColumna(numColumna)

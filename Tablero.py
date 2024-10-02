@@ -9,7 +9,7 @@ class Tablero():
     # matrizValoresBloques: contiene los valores de las columnas y filas para saber que boton esta marcado
     # matrizIndices: contiene los valores de los indices que indican los cuadros a marcar para resolver el puzzle
 
-    def __init__(self, main, screen, blockCant, matrizValoresBloques, matrizIndices):
+    def __init__(self, main, screen, blockCant, matrizValoresBloques, matrizIndices,matrizSolucion):
         self.main = main
         self.screen = screen
         self.blockCant = blockCant

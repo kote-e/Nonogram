@@ -76,3 +76,22 @@ class Tablero():
         """
         if matrizTranspuesta == self.matrizSolucion:
             print("Tablero resuelto")
+            
+    def comprobarFila(self, numFila): # numFila es un entero que indica la fila de matrizValoresBloques a comprobar
+        matrizTranspuesta = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)] #Por el mismo motivo que en comprobarTablero
+        for i in range(self.blockCant):
+            for j in range(self.blockCant):
+                matrizTranspuesta[j][i] = self.matrizValoresBloques[i][j]
+        if matrizTranspuesta[numFila] == self.matrizSolucion[numFila]:
+            return True
+        else:
+            return False
+    def comprobarColumna(self, numColumna): # numColumna es un entero que indica la columna de matrizValoresBloques a comprobar
+        matrizTranspuesta = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)] #Por el mismo motivo que en comprobarTablero
+        for i in range(self.blockCant):
+            for j in range(self.blockCant):
+                matrizTranspuesta[j][i] = self.matrizValoresBloques[i][j]
+        if [matrizTranspuesta[i][numColumna] for i in range(self.blockCant)] == [self.matrizSolucion[i][numColumna] for i in range(self.blockCant)]:
+            return True
+        else:
+            return False

@@ -44,7 +44,7 @@ class Menu():
        
         if mousePos[0] > (WINDOW_WIDTH - 20)//2 - 80 and mousePos[0] < (WINDOW_WIDTH - 20)//2 + 80 and mousePos[1] > (WINDOW_HEIGHT - 20)//2 and mousePos[1] < (WINDOW_HEIGHT - 20)//2 + 80:
             btnJugarTxt = fontBoton.render("Jugar", True, BEIGE)
-            pygame.draw.rect(surface, (85, 88, 130), ((WINDOW_WIDTH - 20)//2 - 80 , (WINDOW_HEIGHT - 20)//2, 160, 80), 0)
+            pygame.draw.rect(surface, BLUE, ((WINDOW_WIDTH - 20)//2 - 80 , (WINDOW_HEIGHT - 20)//2, 160, 80), 0)
         else:
             btnJugarTxt = fontBoton.render("Jugar", True, YELLOW)
             pygame.draw.rect(surface, DARK_BLUE, ((WINDOW_WIDTH - 20)//2 - 80 , (WINDOW_HEIGHT - 20)//2, 160, 80), 0)

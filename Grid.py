@@ -2,6 +2,7 @@ import pygame
 from constantes import *
 from BotonBloque import BotonBloque
 
+
 class Grid():
 
     initialized = False # variables estaticas para inicializar la matriz una sola vez por tablero
@@ -14,6 +15,7 @@ class Grid():
         self.grillaPos = (390, 110) # posicion de la grilla en la pantalla
         self.matrizBloques = self.inicializarMatrizBloques(matrizValoresBloques)
         self.matrizIndices = matrizIndices
+        self.matrizValoresBloques = matrizValoresBloques
        # self.value = 1 # 1 marcado, 2 cruz
 
     def inicializarMatrizBloques(self, matrizValoresBloques):
@@ -43,6 +45,12 @@ class Grid():
         grilla = pygame.Surface((self.grillaSize, self.grillaSize))
         grilla.fill(GREEN)
 
+        superficieImagen = pygame.Surface((240, 240))
+        superficieImagenBorde = pygame.Surface((250, 250))
+
+        superficieImagen.fill(BEIGE)
+        superficieImagenBorde.fill(DARK_BEIGE)
+
         superficieColumnas = pygame.Surface((410, 95))
         superficieFilas = pygame.Surface((95, 410))
 
@@ -51,6 +59,9 @@ class Grid():
 
         pygame.font.init()
         numberSize = 14
+        if self.blockCant == 20:
+            numberSize = 12
+            
         font = pygame.font.SysFont("Comic Sans", numberSize)
 
         for x in range(0, self.blockCant):     # filas
@@ -65,20 +76,31 @@ class Grid():
                 button = self.matrizBloques[x][y]
                 button.draw(grilla)
 
-               
+                paddingColumna = GRID_MARGIN + self.blockSize//2 - numberSize//2
+                paddingFila = self.blockSize//2 - numberSize//2
+
                 # dibujar indices
                 if y < len(self.matrizIndices[0][x]):
                     text = font.render(str(self.matrizIndices[0][x][y]), True, DARK_BLUE)
-                    superficieColumnas.blit(text, (13 + x*(self.blockSize + 1) + GRID_MARGIN*(x + 1), 6 + (numberSize + 3)*y))
+                    superficieColumnas.blit(text, (paddingColumna + x*(self.blockSize + 1) + GRID_MARGIN*(x + 1), 6 + (numberSize + 3)*y))
 
                 if y < len(self.matrizIndices[1][x]):
                     text = font.render(str(self.matrizIndices[1][x][y]), True, DARK_BLUE)
-                    superficieFilas.blit(text, (10 + (numberSize + 3)*y , 13 + x*(self.blockSize + 1) + GRID_MARGIN*(x + 1)))
-        
+                    superficieFilas.blit(text, (10 + (numberSize + 3)*y , paddingFila + x*(self.blockSize + 1) + GRID_MARGIN*(x + 1)))
+
+                bloqueImagenSize = 240//self.blockCant
+
+                if self.matrizValoresBloques[x][y] == 1:
+                    pygame.draw.rect(superficieImagen, DARK_BLUE, (bloqueImagenSize*x, bloqueImagenSize*y, bloqueImagenSize,bloqueImagenSize),0)
+
+
         screen.blit(superficieColumnas, (390, 10))
         screen.blit(superficieFilas, (290, 110))
         screen.blit(grilla, self.grillaPos)
-    
+        screen.blit(superficieImagenBorde, (20, 195))
+        screen.blit(superficieImagen, (25, 200))
+
+
     def getBlockSize(self):
         return self.blockSize   
      
@@ -87,10 +109,3 @@ class Grid():
 
     def getGridSize(self):  
         return self.grillaSize
-
-    
-
-
-       
-        
-

@@ -5,7 +5,6 @@ import numpy as np
 class BotonBloque():
     def __init__(self, rect, fila, columna, matrizValoresBloques):
         self.rect = rect
-        self.clicked = False
         self.fila = fila
         self.columna = columna
         self.matrizValoresBloques = matrizValoresBloques

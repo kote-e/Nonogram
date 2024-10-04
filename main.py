@@ -3,6 +3,8 @@ import pygame, sys
 from traitlets import This
 from constantes import *
 from enum import Enum
+from Menu import Menu
+from Niveles import Niveles
 from Tablero import Tablero
 
 
@@ -48,17 +50,19 @@ class Main():
 
     def __init__(self):
         self.main = self
-        self.etapaJuego = self.Etapa.INICIO
+        self.etapaJuego = self.Etapa.MENU
         self.tablero = 0
-        pass
 
     class Etapa(Enum):
-        INICIO = 1
+        MENU = 1
         NIVELES = 2
         TABLERO = 3
 
     def cambiarEtapa(self, etapa):
         self.etapaJuego = etapa
+
+    def crearTablero(self, blockCant, matrizValoresBloques, matrizIndices, matrizSolucion):
+        self.tablero = Tablero((self.main, screen, blockCant, matrizValoresBloques, matrizIndices, matrizSolucion))
 
     def iniciarJuego(self):
 
@@ -68,34 +72,29 @@ class Main():
         jugando = True
         screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
+        self.menu = Menu(self.main, screen)
+        self.niveles = Niveles(self.main, screen)
         self.tablero = Tablero(self.main, screen, blockCant, matrizValoresBloques, matrizIndices, matrizSolucion)
-        self.etapaJuego = self.Etapa.TABLERO
 
+        # self.etapaJuego = self.Etapa.TABLERO
         screen.fill(GREEN)
         pygame.display.set_caption("Nonogram")
-        screen.fill(GREEN)
-        pygame.display.set_caption("Nonogram")
-
-        while jugando:
-            
-            clock.tick(30)
-            
-            
-            if self.etapaJuego == self.Etapa.TABLERO:
-                self.tablero.etapaTablero() # eventos, dibujar, actualizar son manejados internamente
-                
-       
+        
         while jugando:
             
             clock.tick(60)
             
             
-            if self.etapaJuego == self.Etapa.TABLERO:
-                self.tablero.etapaTablero() # eventos, dibujar, actualizar son manejados internamente
+            if self.etapaJuego == self.Etapa.MENU:
+                self.menu.etapaMenu() # eventos, dibujar, actualizar son manejados internamente
                 
+            elif self.etapaJuego == self.Etapa.NIVELES:
+                self.niveles.etapaNiveles() # eventos, dibujar, actualizar son manejados internamente
+            
+            elif self.etapaJuego == self.Etapa.TABLERO:
+                self.tablero.etapaTablero() # eventos, dibujar, actualizar son manejados internamente
+            
        
-
-
             pygame.display.flip()
         
 

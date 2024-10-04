@@ -41,7 +41,17 @@ class Niveles():
                 sys.exit()
 
             elif event.type ==  pygame.MOUSEBUTTONDOWN:
-                pass 
+
+                botonesPorComprobar = 8 if len(self.listaBotones) >= 8 else len(self.listaBotones)
+                for i in range(botonesPorComprobar):
+                    mousePos = pygame.mouse.get_pos()
+
+                    # checkear si el mouse hace click sobre algun boton
+                    rect = pygame.Rect(self.listaBotones[i + self.pagina*8].rect)
+                    if rect.collidepoint(mousePos):
+                        self.listaBotones[i + self.pagina*8].cargarTablero()
+
+
                 
     def draw(self):
         self.screen.fill(DARK_BLUE)

@@ -1,0 +1,66 @@
+import pygame
+from constantes import *
+
+class BotonNivel():
+    
+    def __init__(self, main, screen, rect, archivoId):
+        self.main = main
+        self.screen = screen
+        self.rect = rect
+        self.id = archivoId     
+        self.size = 0
+        self.progreso = False
+        self.completado = False
+
+    def draw(self):
+        x_pos = self.rect[0]
+        y_pos = self.rect[1]
+        width = self.rect[2]
+        height = self. rect[3]
+
+
+        mouse_pos = pygame.mouse.get_pos()
+        # cambiar de color al pasar el mouse por encima
+        if mouse_pos[0] > x_pos and mouse_pos[0] < x_pos + width and mouse_pos[1] > y_pos and mouse_pos[1] < y_pos + height:
+            
+            pygame.draw.rect(self.screen, DARK_BEIGE, self.rect, 0)
+               
+        else:
+            pygame.draw.rect(self.screen, BEIGE, self.rect, 0)
+
+        pygame.font.init()
+        font = pygame.font.SysFont("Console", 18)
+        fontSubtitulo = pygame.font.SysFont("Console", 15)
+
+        r = pygame.Rect(self.rect)
+        sizeText = font.render(f"{self.size} x {self.size}", True, DARK_BLUE)
+        sizeTextRect = sizeText.get_rect(center = r.center)
+
+        # imprimir los estados del nivel
+        if self.progreso:
+            subText = fontSubtitulo.render("en progreso", True, RED)
+            subTextRect = sizeText.get_rect(centerx = r.centerx - 12, centery = r.centery + 18)
+            self.screen.blit(subText, subTextRect)
+            
+        elif self.size == 0:
+            sizeText = font.render(f"BLOQUEADO", True, BEIGE, DARK_BLUE)
+            sizeTextRect.centerx -= 20
+        
+        elif self.completado :
+            subText = fontSubtitulo.render("completado", True, (97, 135, 70))
+            subTextRect = sizeText.get_rect(centerx = r.centerx - 8, centery = r.centery + 18)
+            self.screen.blit(subText, subTextRect)
+
+
+        self.screen.blit(sizeText, sizeTextRect)
+        
+
+    def cargarTablero(self):
+        self.screen.fill(GREEN)
+
+        ## llamar a funcion para leer matriz de archivo y pasarselo a tablero como argumento.
+
+        # self.main.crearTablero(screen, blockCant, matrizValoresBloques, matrizIndices, matrizSolucion))
+        self.main.cambiarEtapa(self.main.Etapa.TABLERO)
+        
+

@@ -8,19 +8,31 @@ class Niveles():
         self.main = main
         self.screen = screen
         self.cantNiveles = 4
+        self.pagina  = 0  # cual conjunto de niveles se muestra al mismo tiempo, 10 por pagina
         self.listaBotones = []
+        self.listaNivelId = [0,0,0,0,0,0,0] # arreglo con nombres de archivos de matrices para iniciar tablero
 
-
-        for i in range (self.cantNiveles):
-            btn = BotonNivel(main, screen, (90 + i*175, 180, 150, 100), i)
+        # Crear los botones para los niveles existentes 
+        for i in range (8):
+            if i < 4 and i + self.pagina*8 < len(self.listaNivelId):
+                btn = BotonNivel(main, screen, (90 + i*175, 180, 150, 100), i)
+                self.listaBotones.append(btn)
+            elif i >= 4 and i + self.pagina*8 < len(self.listaNivelId):
+                btn2 = BotonNivel(main, screen, (90 + (i-4)*175, 300, 150, 100), i)
+                self.listaBotones.append(btn2)
+            else:
+                break
+            
+            # valores temporales para mostrar los distintos estados
             if i == 1:
+                btn.size = 10
                 btn.progreso = True
             elif i == 2: 
+                btn.size = 10
                 btn.completado = True
-            elif i == 3:
-                btn.size = 0
-                
-            self.listaBotones.append(btn)
+            elif i == 0:
+                btn.size = 20
+
 
     def manejarEventos(self):
         for event in pygame.event.get():
@@ -47,13 +59,17 @@ class Niveles():
         surface.blit(titulo, (83, 32))
         self.screen.blit(surface, (10, 10))
 
-
-        for i in range (self.cantNiveles):
-            btn = self.listaBotones[i]
-            btn.draw()
-
-           
+      
+        for i in range (8):
+            if len(self.listaBotones) > i + self.pagina*8:
+                btn = self.listaBotones[i + self.pagina*8]
+                btn.draw()
         
+    def cambiarPagina(self, valor):
+        if not valor and self.pagina > 0:
+            self.pagina -= 1
+        elif valor and (self.pagina + 1)*8 < len(self.listaBotones):
+            self.pagina += 1
 
     def etapaNiveles(self):
 

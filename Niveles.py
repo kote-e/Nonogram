@@ -1,12 +1,26 @@
 import pygame, sys
 from constantes import *
-
+from BotonNivel import BotonNivel
 
 class Niveles():
 
     def __init__(self, main, screen):
         self.main = main
         self.screen = screen
+        self.cantNiveles = 4
+        self.listaBotones = []
+
+
+        for i in range (self.cantNiveles):
+            btn = BotonNivel(main, screen, (90 + i*175, 180, 150, 100), i)
+            if i == 1:
+                btn.progreso = True
+            elif i == 2: 
+                btn.completado = True
+            elif i == 3:
+                btn.size = 0
+                
+            self.listaBotones.append(btn)
 
     def manejarEventos(self):
         for event in pygame.event.get():
@@ -25,15 +39,19 @@ class Niveles():
        
         fontTitulo = pygame.font.SysFont("Console", 60)
         fontTitulo.set_bold(True)
-       
 
         titulo = fontTitulo.render("Niveles", True, BEIGE)
         tituloSombra = fontTitulo.render("Niveles", True,DARK_BLUE)
 
         surface.blit(tituloSombra, (86, 36))
         surface.blit(titulo, (83, 32))
-
         self.screen.blit(surface, (10, 10))
+
+
+        for i in range (self.cantNiveles):
+            btn = self.listaBotones[i]
+            btn.draw()
+
            
         
 

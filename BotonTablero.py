@@ -21,13 +21,13 @@ class BotonTablero:
        
         if mouse_pos[0] > x_pos and mouse_pos[0] < x_pos + width and mouse_pos[1] > y_pos and mouse_pos[1] < y_pos + height:
             
-            pygame.draw.rect(self.screen, (85, 88, 130), self.rect, 0)
+            pygame.draw.rect(self.screen, BLUE, self.rect, 0)
                
         else:
             pygame.draw.rect(self.screen, DARK_BLUE, self.rect, 0)
 
         pygame.font.init()
-        font = pygame.font.SysFont("Comic Sans", 16)
+        font = pygame.font.SysFont("Console", 16)
         text = font.render(self.text, True, BEIGE)
         text_rect = text.get_rect(center = self.rect.center)
 

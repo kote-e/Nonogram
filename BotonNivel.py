@@ -20,6 +20,13 @@ class BotonNivel():
 
 
         mouse_pos = pygame.mouse.get_pos()
+
+        shadeBoxRect = pygame.Rect(self.rect)
+        shadeBoxRect.x += 8
+        shadeBoxRect.y += 8
+
+        pygame.draw.rect(self.screen, DARK_BLUE, shadeBoxRect, 0)
+
         # cambiar de color al pasar el mouse por encima
         if mouse_pos[0] > x_pos and mouse_pos[0] < x_pos + width and mouse_pos[1] > y_pos and mouse_pos[1] < y_pos + height:
             
@@ -56,8 +63,10 @@ class BotonNivel():
         
 
     def cargarTablero(self):
-        self.screen.fill(GREEN)
-
+        self.screen.fill(DARK_BLUE)
+        surface = pygame.Surface((WINDOW_WIDTH - 20, WINDOW_HEIGHT - 20))
+        surface.fill(GREEN)
+        self.screen.blit(surface, (10, 10))
         ## llamar a funcion para leer matriz de archivo y pasarselo a tablero como argumento.
 
         # self.main.crearTablero(screen, blockCant, matrizValoresBloques, matrizIndices, matrizSolucion))

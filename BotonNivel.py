@@ -8,7 +8,7 @@ class BotonNivel():
         self.screen = screen
         self.rect = rect
         self.id = archivoId     
-        self.size = 10
+        self.size = 0
         self.progreso = False
         self.completado = False
 
@@ -56,6 +56,11 @@ class BotonNivel():
         
 
     def cargarTablero(self):
-        # self.main.cambiarEtapa(self.main.Etapa.TABLERO)
-        pass
+        self.screen.fill(GREEN)
+
+        ## llamar a funcion para leer matriz de archivo y pasarselo a tablero como argumento.
+
+        # self.main.crearTablero(screen, blockCant, matrizValoresBloques, matrizIndices, matrizSolucion))
+        self.main.cambiarEtapa(self.main.Etapa.TABLERO)
+        
 

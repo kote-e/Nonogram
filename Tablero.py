@@ -52,22 +52,35 @@ class Tablero():
                         self.comprobarTablero() # Comprobamos si al desmarcarlo se resuelve el tablero
                         self.comprobarTachar(fila, columna)
                 # funcion para salir del tablero
-                elif pos[0] > 10 and pos[0] < 72 and pos[1] > 10 and pos[1] < 50:
-                    print("cambiando a niveles")
+                elif pos[0] > 33 and pos[0] < 95  and pos[1] > 25 and pos[1] < 65:
+                    
                     self.main.cambiarEtapa(self.main.Etapa.NIVELES)
 
 
                 # funcion para resetear el tablero
-                elif pos[0] > 82 and pos[0] < 172 and pos[1] > 10 and pos[1] < 50:
+                elif pos[0] > 110 and pos[0] < 200 and pos[1] > 25 and pos[1] < 65:
                     self.matrizValoresBloques = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
                     self.grilla = Grid(self.blockCant, self.matrizValoresBloques, self.matrizIndices)
 
     def draw(self):
 
-        botonSalir = BotonTablero(self.screen, "SALIR", pygame.Rect(10, 10, 62, 40))
-        botonResetear = BotonTablero(self.screen, "RESETEAR", pygame.Rect(82, 10, 90, 40))
+        botonSalir = BotonTablero(self.screen, "salir", (33, 25, 62, 40))
+        botonResetear = BotonTablero(self.screen, "reiniciar", (115, 25, 100, 40))
         botonSalir.draw()
         botonResetear.draw()
+
+        pygame.font.init()
+        fontExplicacion = pygame.font.SysFont("Console", 14)
+
+        explicacion1 = fontExplicacion.render("Click izquierdo para marcar,", True, DARK_BLUE)
+        explicacion2 = fontExplicacion.render("Click derecho para tachar.", True, DARK_BLUE)
+        
+        # pygame.draw.rect(self.screen, BEIGE, (33, 110, 240,100),0)
+        self.screen.blit(explicacion1,(42, 120))
+        self.screen.blit(explicacion2,(45, 140))
+       
+
+       
 
     def etapaTablero(self):
 

@@ -12,7 +12,7 @@ class Grid():
         self.blockCant = blockCant
         self.blockSize = 0
         self.grillaSize = 410
-        self.grillaPos = (390, 110) # posicion de la grilla en la pantalla
+        self.grillaPos = (405, 130) # posicion de la grilla en la pantalla
         self.matrizBloques = self.inicializarMatrizBloques(matrizValoresBloques)
         self.matrizIndices = matrizIndices
         self.matrizValoresBloques = matrizValoresBloques
@@ -63,12 +63,13 @@ class Grid():
             numberSize = 12
             
         font = pygame.font.SysFont("Comic Sans", numberSize)
+        font.set_bold(True)
 
         for x in range(0, self.blockCant):     # filas
 
             # dibujar fondo indices
-            pygame.draw.rect(superficieColumnas, YELLOW, (x*(self.blockSize + 1) + GRID_MARGIN*(x + 1), 0, self.blockSize, 95), 0)
-            pygame.draw.rect(superficieFilas, YELLOW, (0, x*(self.blockSize + 1) + GRID_MARGIN*(x + 1), 115, self.blockSize), 0) 
+            pygame.draw.rect(superficieColumnas, DARK_BLUE, (x*(self.blockSize + 1) + GRID_MARGIN*(x + 1), 0, self.blockSize, 95), 0)
+            pygame.draw.rect(superficieFilas, DARK_BLUE, (0, x*(self.blockSize + 1) + GRID_MARGIN*(x + 1), 115, self.blockSize), 0) 
 
             for y in range(0, self.blockCant): # columnas
                 
@@ -81,11 +82,11 @@ class Grid():
 
                 # dibujar indices
                 if y < len(self.matrizIndices[0][x]):
-                    text = font.render(str(self.matrizIndices[0][x][y]), True, DARK_BLUE)
+                    text = font.render(str(self.matrizIndices[0][x][y]), True, BEIGE)
                     superficieColumnas.blit(text, (paddingColumna + x*(self.blockSize + 1) + GRID_MARGIN*(x + 1), 6 + (numberSize + 3)*y))
 
                 if y < len(self.matrizIndices[1][x]):
-                    text = font.render(str(self.matrizIndices[1][x][y]), True, DARK_BLUE)
+                    text = font.render(str(self.matrizIndices[1][x][y]), True, BEIGE)
                     superficieFilas.blit(text, (10 + (numberSize + 3)*y , paddingFila + x*(self.blockSize + 1) + GRID_MARGIN*(x + 1)))
 
                 bloqueImagenSize = 240//self.blockCant
@@ -94,11 +95,11 @@ class Grid():
                     pygame.draw.rect(superficieImagen, DARK_BLUE, (bloqueImagenSize*x, bloqueImagenSize*y, bloqueImagenSize,bloqueImagenSize),0)
 
 
-        screen.blit(superficieColumnas, (390, 10))
-        screen.blit(superficieFilas, (290, 110))
+        screen.blit(superficieColumnas, (self.grillaPos[0], self.grillaPos[1] - 105))
+        screen.blit(superficieFilas, (self.grillaPos[0] - 105, self.grillaPos[1]))
         screen.blit(grilla, self.grillaPos)
-        screen.blit(superficieImagenBorde, (20, 195))
-        screen.blit(superficieImagen, (25, 200))
+        screen.blit(superficieImagenBorde, (30, 195))
+        screen.blit(superficieImagen, (35, 200))
 
 
     def getBlockSize(self):

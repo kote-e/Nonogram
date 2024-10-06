@@ -5,7 +5,7 @@ from constantes import *
 class BotonTablero:
     def __init__(self, screen, text, rect):
         self.screen = screen
-        self.rect = rect
+        self.rect = pygame.Rect(rect)
         self.text = text
         
 

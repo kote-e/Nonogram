@@ -103,8 +103,8 @@ class Tablero():
         # pygame.draw.rect(self.screen, BEIGE, (33, 110, 240,100),0)
         self.screen.blit(explicacion1,(42, 120))
         self.screen.blit(explicacion2,(45, 140))
-        self.screen.blit(explicacion3,(48, 500))
-        self.screen.blit(explicacion4,(80, 510))
+        self.screen.blit(explicacion3,(53, 500))
+        self.screen.blit(explicacion4,(128, 510))
 
     def comprobarTablero(self):
         # Cuando se marca un cuadro, las columnas y filas estan invertidas en matrizValoresBloques, por lo que transponemos la matriz

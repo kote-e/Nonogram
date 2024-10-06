@@ -50,13 +50,10 @@ class Niveles():
                     rect = pygame.Rect(self.listaBotones[i + self.pagina*8].rect)
                     if rect.collidepoint(mousePos):
                         self.listaBotones[i + self.pagina*8].cargarTablero()
-#(WINDOW_WIDTH - 175, 30, 80, 60)
+
                 if mousePos[0] > WINDOW_WIDTH - 175 + 10 and mousePos[0] < WINDOW_WIDTH - 175 + 90 and mousePos[1] > 40 and mousePos[1] < 100:
 
                     self.main.cambiarEtapa(self.main.Etapa.MENU)
-
-
-
                 
     def draw(self):
         self.screen.fill(DARK_BLUE)

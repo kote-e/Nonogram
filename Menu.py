@@ -38,6 +38,9 @@ class Menu():
         titulo = fontTitulo.render("Nonogram", True, BEIGE)
         tituloSombra = fontTitulo.render("Nonogram", True,DARK_BLUE)
 
+        fontCreditos = pygame.font.SysFont("Console", 14)
+        creditos = fontCreditos.render("Creado por: Valeria Quiroga, Ariel Cisternas y Maria José San Martín",True, BEIGE )
+
         mousePos = pygame.mouse.get_pos()
         
         pygame.draw.rect(surface, DARK_GREEN, ((WINDOW_WIDTH - 20)//2 - 75 , (WINDOW_HEIGHT - 20)//2 + 8, 165, 83), 0)
@@ -50,12 +53,13 @@ class Menu():
             pygame.draw.rect(surface, DARK_BLUE, ((WINDOW_WIDTH - 20)//2 - 80 , (WINDOW_HEIGHT - 20)//2, 160, 80), 0)
 
     
+       
+        surface.blit(creditos, (150, 500)) 
         surface.blit(tituloSombra, (229, 68))
         surface.blit(titulo, (223, 62))
         surface.blit(btnJugarTxt, ((WINDOW_WIDTH - 20)//2 - 62 , (WINDOW_HEIGHT - 20)//2 + 14))
         self.screen.blit(surface, (10, 10))
        
-        
 
     def etapaMenu(self):
 

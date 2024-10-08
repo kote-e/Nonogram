@@ -116,8 +116,9 @@ class Grid():
             print(matrizTranspuesta[i])
         """
         if matrizTranspuesta == self.matrizSolucion:
-            print("Tablero resuelto")
-            
+            return True
+        else:
+            return False
     def comprobarFila(self, numFila): # numFila es un entero que indica la fila de matrizValoresBloques a comprobar
         matrizTranspuesta = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)] #Por el mismo motivo que en comprobarTablero
         for i in range(self.blockCant):
@@ -157,7 +158,43 @@ class Grid():
             self.tacharFila(numFila)
         if self.comprobarColumna(numColumna):
             self.tacharColumna(numColumna)
-
+    def filaAIndice(self, numFila):
+        matrizTranspuesta = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
+        for i in range(self.blockCant):
+            for j in range(self.blockCant):
+                matrizTranspuesta[j][i] = self.matrizValoresBloques[i][j]
+                if matrizTranspuesta[j][i] == 2: #Para evitar errores, matrizTranspuesta solo tendra 0 y 1
+                    matrizTranspuesta[j][i] = 0
+        fila = matrizTranspuesta[numFila]
+        print(fila)
+        indices = []
+        count = 0
+        for i in range(self.blockCant):
+            if fila[i] == 1:
+                count += 1
+                if (i < self.blockCant-1 and fila[i+1] == 0) or (i == self.blockCant-1 and fila[i] == 1):
+                    indices.append(count)
+            elif fila[i] == 0:
+                count = 0
+        return indices
+    def columnaAIndice(self, numColumna):
+        matrizTranspuesta = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
+        for i in range(self.blockCant):
+            for j in range(self.blockCant):
+                matrizTranspuesta[j][i] = self.matrizValoresBloques[i][j]
+                if matrizTranspuesta[j][i] == 2: #Para evitar errores, matrizTranspuesta solo tendra 0 y 1
+                    matrizTranspuesta[j][i] = 0
+        columna = [matrizTranspuesta[i][numColumna] for i in range(self.blockCant)]
+        indices = []
+        count = 0
+        for i in range(self.blockCant):
+            if columna[i] == 1:
+                count += 1
+                if (i < self.blockCant-1 and columna[i+1] == 0) or (i == self.blockCant-1 and columna[i] == 1):
+                    indices.append(count)
+            elif columna[i] == 0:
+                count = 0
+        return indices
     def getBlockSize(self):
         return self.blockSize   
      

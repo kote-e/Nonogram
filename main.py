@@ -61,7 +61,7 @@ class Main():
     def cambiarEtapa(self, etapa):
         self.etapaJuego = etapa
 
-    def crearTablero(self, blockCant, matrizValoresBloques, matrizIndices, matrizSolucion):
+    def crearTablero(self, blockCant, matrizValoresBloques, matrizSolucion):
         self.tablero = Tablero((self.main, screen, blockCant, matrizValoresBloques, matrizIndices, matrizSolucion))
 
     def iniciarJuego(self):
@@ -74,7 +74,7 @@ class Main():
 
         self.menu = Menu(self.main, screen)
         self.niveles = Niveles(self.main, screen)
-        self.tablero = Tablero(self.main, screen, blockCant, matrizValoresBloques, matrizIndices, matrizSolucion)
+        self.tablero = Tablero(self.main, screen, blockCant, matrizValoresBloques, matrizSolucion)
 
         # self.etapaJuego = self.Etapa.TABLERO
         screen.fill(GREEN)

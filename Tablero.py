@@ -11,13 +11,12 @@ class Tablero():
     # matrizValoresBloques: contiene los valores de las columnas y filas para saber que boton esta marcado
     # matrizIndices: contiene los valores de los indices que indican los cuadros a marcar para resolver el puzzle
 
-    def __init__(self, main, screen, blockCant, matrizValoresBloques, matrizIndices,matrizSolucion):
+    def __init__(self, main, screen, blockCant, matrizValoresBloques, matrizSolucion):
         self.main = main
         self.screen = screen
         self.blockCant = blockCant
         self.matrizValoresBloques = matrizValoresBloques
-        self.matrizIndices = matrizIndices
-        self.grilla = Grid(blockCant, matrizValoresBloques, matrizIndices, matrizSolucion)
+        self.grilla = Grid(blockCant, matrizValoresBloques, matrizSolucion)
 
         # variables para calcular tiempo en pantalla de puzle completado
         self.puzzleCompletado = False

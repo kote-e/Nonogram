@@ -104,10 +104,7 @@ class Grid():
 
     def comprobarTablero(self):
         # Cuando se marca un cuadro, las columnas y filas estan invertidas en matrizValoresBloques, por lo que transponemos la matriz
-        matrizTranspuesta = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
-        for i in range(self.blockCant):
-            for j in range(self.blockCant):
-                matrizTranspuesta[j][i] = self.matrizValoresBloques[i][j]
+        matrizTranspuesta = self.getMatrizTranspuesta()
         """
         Para ver la matriz impresa
         for i in range(self.blockCant):
@@ -120,24 +117,14 @@ class Grid():
         else:
             return False
     def comprobarFila(self, numFila): # numFila es un entero que indica la fila de matrizValoresBloques a comprobar
-        matrizTranspuesta = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)] #Por el mismo motivo que en comprobarTablero
-        for i in range(self.blockCant):
-            for j in range(self.blockCant):
-                matrizTranspuesta[j][i] = self.matrizValoresBloques[i][j]
-                if matrizTranspuesta[j][i] == 2: #Para evitar errores, matrizTranspuesta solo tendra 0 y 1
-                    matrizTranspuesta[j][i] = 0
+        matrizTranspuesta = self.getMatrizTranspuesta()
         if matrizTranspuesta[numFila] == self.matrizSolucion[numFila]:
             return True
         else:
             return False
         
     def comprobarColumna(self, numColumna): # numColumna es un entero que indica la columna de matrizValoresBloques a comprobar
-        matrizTranspuesta = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)] #Por el mismo motivo que en comprobarTablero
-        for i in range(self.blockCant):
-            for j in range(self.blockCant):
-                matrizTranspuesta[j][i] = self.matrizValoresBloques[i][j]
-                if matrizTranspuesta[j][i] == 2: #Para evitar errores, matrizTranspuesta solo tendra 0 y 1
-                    matrizTranspuesta[j][i] = 0
+        matrizTranspuesta = self.getMatrizTranspuesta()
         if [matrizTranspuesta[i][numColumna] for i in range(self.blockCant)] == [self.matrizSolucion[i][numColumna] for i in range(self.blockCant)]:
             return True
         else:
@@ -177,8 +164,8 @@ class Grid():
             indicesFilas.append(self.listaAIndice(self.matrizSolucion[i]))
             columna = [self.matrizSolucion[j][i] for j in range(self.blockCant)]
             indicesColumnas.append(self.listaAIndice(columna))
-        print(indicesFilas)
-        print(indicesColumnas)
+        #print(indicesFilas)
+        #print(indicesColumnas)
         return [indicesColumnas, indicesFilas]
     def getBlockSize(self):
         return self.blockSize   
@@ -188,3 +175,10 @@ class Grid():
 
     def getGridSize(self):  
         return self.grillaSize
+    
+    def getMatrizTranspuesta(self):
+        matrizTranspuesta = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
+        for i in range(self.blockCant):
+            for j in range(self.blockCant):
+                matrizTranspuesta[j][i] = self.matrizValoresBloques[i][j]
+        return matrizTranspuesta

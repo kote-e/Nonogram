@@ -158,15 +158,8 @@ class Grid():
             self.tacharFila(numFila)
         if self.comprobarColumna(numColumna):
             self.tacharColumna(numColumna)
-    def filaAIndice(self, numFila):
-        matrizTranspuesta = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
-        for i in range(self.blockCant):
-            for j in range(self.blockCant):
-                matrizTranspuesta[j][i] = self.matrizValoresBloques[i][j]
-                if matrizTranspuesta[j][i] == 2: #Para evitar errores, matrizTranspuesta solo tendra 0 y 1
-                    matrizTranspuesta[j][i] = 0
-        fila = matrizTranspuesta[numFila]
-        print(fila)
+            
+    def listaAIndice(self, fila): #lista es una lista con 0 y 1
         indices = []
         count = 0
         for i in range(self.blockCant):
@@ -177,24 +170,16 @@ class Grid():
             elif fila[i] == 0:
                 count = 0
         return indices
-    def columnaAIndice(self, numColumna):
-        matrizTranspuesta = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
+    def getIndicesSolución(self):
+        indicesColumnas = []
+        indicesFilas = []
         for i in range(self.blockCant):
-            for j in range(self.blockCant):
-                matrizTranspuesta[j][i] = self.matrizValoresBloques[i][j]
-                if matrizTranspuesta[j][i] == 2: #Para evitar errores, matrizTranspuesta solo tendra 0 y 1
-                    matrizTranspuesta[j][i] = 0
-        columna = [matrizTranspuesta[i][numColumna] for i in range(self.blockCant)]
-        indices = []
-        count = 0
-        for i in range(self.blockCant):
-            if columna[i] == 1:
-                count += 1
-                if (i < self.blockCant-1 and columna[i+1] == 0) or (i == self.blockCant-1 and columna[i] == 1):
-                    indices.append(count)
-            elif columna[i] == 0:
-                count = 0
-        return indices
+            indicesFilas.append(self.listaAIndice(self.matrizSolucion[i]))
+            columna = [self.matrizSolucion[j][i] for j in range(self.blockCant)]
+            indicesColumnas.append(self.listaAIndice(columna))
+        print(indicesFilas)
+        print(indicesColumnas)
+        return [indicesColumnas, indicesFilas]
     def getBlockSize(self):
         return self.blockSize   
      

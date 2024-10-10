@@ -27,6 +27,11 @@ class CrearPuzle():
         self.inputRect = pygame.Rect(70, 440, 200, 80)
         self.inputActive = False
         self.userText = ''
+        self.btnSizeSelector = []
+
+        
+        for i in range(3):
+            self.btnSizeSelector.append(pygame.Rect(460 + 60*i + 20, 25, 60, 50))
 
         self.drawGrid(self.screen)
         # self.grilla = Grid(blockCant, self.matrizValoresBloques, matrizSolucion)
@@ -107,7 +112,26 @@ class CrearPuzle():
                 elif pos[0] > 230 and pos[0] < 310 and pos[1] > 25 and pos[1] < 65:
                     self.writeFile()
 
+                elif self.btnSizeSelector[0].collidepoint(pos):
+                    self.blockCant = 5
+                    self.matrizValoresBloques = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
+                    self.matrizBloques = self.inicializarMatrizBloques(self.matrizValoresBloques)
+                    self.drawGrid(self.screen)
                 
+                elif self.btnSizeSelector[1].collidepoint(pos): 
+                    self.blockCant = 10
+                    self.matrizValoresBloques = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
+                    self.matrizBloques = self.inicializarMatrizBloques(self.matrizValoresBloques)
+                    self.drawGrid(self.screen)
+                
+                elif self.btnSizeSelector[2].collidepoint(pos):
+                    self.blockCant = 20
+                    self.matrizValoresBloques = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
+                    self.matrizBloques = self.inicializarMatrizBloques(self.matrizValoresBloques)
+                    self.drawGrid(self.screen)
+
+
+
                 # funcion para selecionar el input
                 if self.inputRect.x < pos[0] < self.inputRect.x + self.inputRect.width and self.inputRect.y < pos[1] < self.inputRect.y + self.inputRect.height: 
                     self.inputActive = True
@@ -128,7 +152,6 @@ class CrearPuzle():
         botonGuardar.draw()
 
         # dibujar input texto
-        
         pygame.font.init()
         font = pygame.font.SysFont("Console", 20)
 
@@ -145,8 +168,35 @@ class CrearPuzle():
         # set width of textfield so that text cannot get 
         # outside of user's text input 
         
-        
 
+        if self.btnSizeSelector[0].collidepoint(pygame.mouse.get_pos()): # boton 5x5
+            pygame.draw.rect(self.screen, BLUE, self.btnSizeSelector[0], 0)
+        else:
+            pygame.draw.rect(self.screen, DARK_BLUE, self.btnSizeSelector[0], 0)
+
+        if self.btnSizeSelector[1].collidepoint(pygame.mouse.get_pos()):
+            pygame.draw.rect(self.screen, BLUE, self.btnSizeSelector[1], 0)
+        else:
+            pygame.draw.rect(self.screen, DARK_BLUE, self.btnSizeSelector[1], 0)
+
+        if self.btnSizeSelector[2].collidepoint(pygame.mouse.get_pos()):
+            pygame.draw.rect(self.screen, BLUE, self.btnSizeSelector[2], 0)
+        else:
+            pygame.draw.rect(self.screen, DARK_BLUE, self.btnSizeSelector[2], 0)
+
+        fontSelectSize = pygame.font.SysFont("Console", 15)
+        text5x5 = fontSelectSize.render("5x5", True, BEIGE)
+        text10x10 = fontSelectSize.render("10x10", True, BEIGE)
+        text20x20 = fontSelectSize.render("20x20", True, BEIGE)
+
+        text5x5Rect = text5x5.get_rect(center = self.btnSizeSelector[0].center)
+        text10x10Rect = text10x10.get_rect(center = self.btnSizeSelector[1].center)
+        text20x20Rect = text20x20.get_rect(center = self.btnSizeSelector[2].center)
+
+        self.screen.blit(text5x5, text5x5Rect)
+        self.screen.blit(text10x10, text10x10Rect)
+        self.screen.blit(text20x20, text20x20Rect)
+        
     def writeFile(self):
 
         name = self.userText.lower()
@@ -201,6 +251,20 @@ class CrearPuzle():
         screen.blit(superficieImagenBorde, (50, 155))
         screen.blit(superficieImagen, (55, 160))
 
+        # dibujar bordes de la grilla
+
+
+        pygame.draw.lines(self.screen, DARK_BLUE, True, [(self.grillaPos[0] - 11, self.grillaPos[1] - 6), (self.grillaPos[0] + self.grillaSize + 1, self.grillaPos[1] - 6)], 10)
+
+        pygame.draw.lines(self.screen, DARK_BLUE, True, [(self.grillaPos[0] - 11, self.grillaPos[1] + self.grillaSize - 4), (self.grillaPos[0] + self.grillaSize + 1, self.grillaPos[1] + self.grillaSize - 4)], 10)
+
+
+        pygame.draw.lines(self.screen, DARK_BLUE, True, [(self.grillaPos[0] - 7, self.grillaPos[1] - 6), (self.grillaPos[0] - 7, self.grillaPos[1] + self.grillaSize - 3) ], 10)
+        
+        pygame.draw.lines(self.screen, DARK_BLUE, True, [(self.grillaPos[0] + self.grillaSize - 4, self.grillaPos[1] - 5), (self.grillaPos[0] + self.grillaSize - 4, self.grillaPos[1] + self.grillaSize - 5)], 10)
+
+
+    
     def inicializarMatrizBloques(self, matrizValoresBloques):
         
         matriz = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]

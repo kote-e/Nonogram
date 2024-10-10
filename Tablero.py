@@ -18,8 +18,8 @@ class Tablero():
         self.matrizValoresBloques = matrizValoresBloques
         self.grilla = Grid(blockCant, matrizValoresBloques, matrizSolucion)
 
-        self.inicio = False # variable para dibujar una vez la grilla al meterse al tablero
-        
+        self.dibujarInicio = True # variable para dibujar una vez la grilla al meterse al tablero
+
         # variables para calcular tiempo en pantalla de puzle completado
         self.puzleCompletado = False
         self.tiempoPuzleCompletado = 0
@@ -31,9 +31,9 @@ class Tablero():
     # metodo para ejecutar la etapa del tablero
     def etapaTablero(self):
 
-        if not self.inicio:
+        if self.dibujarInicio:
             self.grilla.drawGrid(self.screen)
-            self.inicio = True
+            self.dibujarInicio = False
         
         if not self.puzleCompletado:
             self.draw()
@@ -56,7 +56,8 @@ class Tablero():
                 pos = pygame.mouse.get_pos()
                 grillaPos = self.grilla.getGridPos()
 
-                if (pos[0] > grillaPos[0] and pos[0] < 800) and (pos[1] > grillaPos[1] and pos[1] < 520): # si esta dentro de la grilla
+                # si esta dentro de la grilla
+                if (pos[0] > grillaPos[0] and pos[0] < 800) and (pos[1] > grillaPos[1] and pos[1] < 520): 
                  
                     col = int((pos[0] - grillaPos[0]) // (self.grilla.getGridSize() // self.blockCant))
                     fi = int((pos[1] - grillaPos[1]) // (self.grilla.getGridSize() // self.blockCant))
@@ -84,7 +85,7 @@ class Tablero():
                 
                 # funcion para salir del tablero
                 elif pos[0] > 33 and pos[0] < 95  and pos[1] > 25 and pos[1] < 65:
-                    self.inicio = False
+                    self.dibujarInicio = True
                     self.main.cambiarEtapa(self.main.Etapa.NIVELES)
 
 
@@ -94,7 +95,9 @@ class Tablero():
                     self.grilla = Grid(self.blockCant, self.matrizValoresBloques, self.grilla.matrizSolucion)
 
 
-                self.grilla.drawGrid(self.screen)
+                self.grilla.drawGrid(self.screen)  # redibujar la grilla
+
+
     # metodo para dibujar la etapa del tablero
     def draw(self):
 

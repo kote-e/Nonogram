@@ -8,15 +8,15 @@ class Grid():
     initialized = False # variables estaticas para inicializar la matriz una sola vez por tablero
     # matriz de botones
 
-    def __init__(self, blockCant, matrizValoresBloques, matrizIndices, matrizSolucion):
+    def __init__(self, blockCant, matrizValoresBloques, matrizSolucion):
         self.blockCant = blockCant
         self.blockSize = 0
         self.grillaSize = 410
         self.grillaPos = (405, 130) # posicion de la grilla en la pantalla
         self.matrizBloques = self.inicializarMatrizBloques(matrizValoresBloques)
-        self.matrizIndices = matrizIndices
         self.matrizValoresBloques = matrizValoresBloques
         self.matrizSolucion = matrizSolucion
+        self.matrizIndices = self.getIndicesSolución()
        # self.value = 1 # 1 marcado, 2 cruz
 
     def inicializarMatrizBloques(self, matrizValoresBloques):
@@ -157,6 +157,7 @@ class Grid():
             elif fila[i] == 0:
                 count = 0
         return indices
+    
     def getIndicesSolución(self):
         indicesColumnas = []
         indicesFilas = []
@@ -167,6 +168,7 @@ class Grid():
         #print(indicesFilas)
         #print(indicesColumnas)
         return [indicesColumnas, indicesFilas]
+    
     def getBlockSize(self):
         return self.blockSize   
      

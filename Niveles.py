@@ -7,33 +7,48 @@ class Niveles():
     def __init__(self, main, screen):
         self.main = main
         self.screen = screen
-        self.cantNiveles = 4
+
         self.pagina  = 0  # cual conjunto de niveles se muestra al mismo tiempo, 10 por pagina
         self.listaBotones = []
-        self.listaNivelId = [0,0,0,0,0,0,0] # arreglo con nombres de archivos de matrices para iniciar tablero
+        self.cantidadNiveles = 17
+        self.listaNiveles = [1,0,2,0,3,0,0,1,1,1,1,2,2,3,3,0,0] # arreglo con nombres de archivos de matrices para testear
 
-        # Crear los botones para los niveles existentes 
+        self.crearBotonesNiveles()
+    
+    def etapaNiveles(self):
+        self.draw()
+        self.manejarEventos()
+        pygame.display.update()
+    
+
+    # Funcion que crea los botones de los niveles y los agrega a la lista de botones
+    def crearBotonesNiveles(self):
+        self.listaBotones.clear()
+
         for i in range (8):
-            if i < 4 and i + self.pagina*8 < len(self.listaNivelId):
-                btn = BotonNivel(main, screen, (90 + i*175, 180, 150, 100), i)
-                self.listaBotones.append(btn)
-            elif i >= 4 and i + self.pagina*8 < len(self.listaNivelId):
-                btn2 = BotonNivel(main, screen, (90 + (i-4)*175, 320, 150, 100), i)
-                self.listaBotones.append(btn2)
+            btn = 0
+            if i < 4 and i + self.pagina*8 < self.cantidadNiveles:
+                btn = BotonNivel(self.main, self.screen, (90 + i*175, 180, 150, 100), self.listaNiveles[i + self.pagina*8])
+            
+            elif i >= 4 and i + self.pagina*8 < self.cantidadNiveles:
+                btn = BotonNivel(self.main, self.screen, (90 + (i-4)*175, 320, 150, 100), self.listaNiveles[i + self.pagina*8])
             else:
                 break
-            
-            # valores temporales para mostrar los distintos estados
-            if i == 1:
-                btn.size = 10
+
+            ### valores temporales para mostrar los distintos estados
+            if self.listaNiveles[i + self.pagina*8] == 1:
                 btn.progreso = True
-            elif i == 2: 
+                btn.size = 10
+            elif self.listaNiveles[i + self.pagina*8] == 2: 
                 btn.size = 10
                 btn.completado = True
-            elif i == 0:
+            elif self.listaNiveles[i + self.pagina*8] == 3:
                 btn.size = 20
+            ### fin valores temporales
 
-
+            self.listaBotones.append(btn)
+            
+            
     def manejarEventos(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -43,18 +58,33 @@ class Niveles():
             elif event.type ==  pygame.MOUSEBUTTONDOWN:
 
                 botonesPorComprobar = 8 if len(self.listaBotones) >= 8 else len(self.listaBotones)
+               
+                # botonNivel
                 for i in range(botonesPorComprobar):
                     mousePos = pygame.mouse.get_pos()
+                    
+                    if self.cantidadNiveles > i + self.pagina*8: # ver si esta dentro del rango de la lista
+                        rect = pygame.Rect(self.listaBotones[i].rect)
+                        if rect.collidepoint(mousePos):
+                            self.listaBotones[i].cargarTablero()
+                    else:
+                        break
 
-                    # checkear si el mouse hace click sobre algun boton
-                    rect = pygame.Rect(self.listaBotones[i + self.pagina*8].rect)
-                    if rect.collidepoint(mousePos):
-                        self.listaBotones[i + self.pagina*8].cargarTablero()
-
+                # Boton de retorno
                 if mousePos[0] > WINDOW_WIDTH - 175 + 10 and mousePos[0] < WINDOW_WIDTH - 175 + 90 and mousePos[1] > 40 and mousePos[1] < 100:
-
                     self.main.cambiarEtapa(self.main.Etapa.MENU)
-                
+
+     
+                # botones Pagina
+                if  mousePos[1] > 460 and mousePos[1] < 520:
+
+                    if mousePos[0] > WINDOW_WIDTH//2 - 60 and mousePos[0] < WINDOW_WIDTH//2 :
+       
+                        self.cambiarPagina(False)
+                    elif mousePos[0] > WINDOW_WIDTH//2 + 20  and mousePos[0] < WINDOW_WIDTH//2 + 80:
+                  
+                        self.cambiarPagina(True)
+
     def draw(self):
         self.screen.fill(DARK_BLUE)
         surface = pygame.Surface((WINDOW_WIDTH - 20, WINDOW_HEIGHT - 20))
@@ -64,7 +94,7 @@ class Niveles():
         # botonRetorno.draw()
 
         self.crearBotonRetorno(surface)
-        self.crearBotonesPasarPagina()
+        self.crearBotonesPasarPagina(surface)
     
         pygame.font.init()
         fontTitulo = pygame.font.SysFont("Console", 60)
@@ -77,28 +107,29 @@ class Niveles():
         surface.blit(titulo, (83, 32))
         self.screen.blit(surface, (10, 10))
 
-      
-        for i in range (8):
-            if len(self.listaBotones) > i + self.pagina*8:
-                btn = self.listaBotones[i + self.pagina*8]
-                btn.draw()
 
+        # dibujar los botones de los niveles
+        for i in range (8):
+            if i + self.pagina*8 < self.cantidadNiveles:
+                btn = self.listaBotones[i]
+                btn.draw()
+            else:
+                break
+
+        pygame.display.update()     
         
     def cambiarPagina(self, valor):
         if not valor and self.pagina > 0:
             self.pagina -= 1
-        elif valor and (self.pagina + 1)*8 < len(self.listaBotones):
+        elif valor and (self.pagina + 1)*8 + 1 <= self.cantidadNiveles:
             self.pagina += 1
-
-    def etapaNiveles(self):
-
-        self.draw()
-        self.manejarEventos()
+           
+        self.crearBotonesNiveles()
         pygame.display.update()
-    
+        
+
     def crearBotonRetorno(self, surface):
         mouse_pos = pygame.mouse.get_pos()
-
         botonRetornoRect = pygame.Rect((WINDOW_WIDTH - 175, 30, 80, 60))
        
         if mouse_pos[0] > botonRetornoRect.x + 10 and mouse_pos[0] < botonRetornoRect.x + 10 + botonRetornoRect.width and mouse_pos[1] > botonRetornoRect.y +10 and mouse_pos[1] < botonRetornoRect.y + botonRetornoRect.height+10:
@@ -116,5 +147,33 @@ class Niveles():
         surface.blit(text, text_rect)
 
 
-    def crearBotonesPasarPagina(self):
-        pass
+    def crearBotonesPasarPagina(self, surface):
+        mouse_pos = pygame.mouse.get_pos()
+
+        botonPagPrev = pygame.Rect((WINDOW_WIDTH//2 - 70, 450, 60, 60))
+        botonPagSig = pygame.Rect((WINDOW_WIDTH//2 + 10, 450, 60, 60))
+       
+        if mouse_pos[0] > botonPagPrev.x + 10 and mouse_pos[0] < botonPagPrev.x + 10 + botonPagPrev.width and mouse_pos[1] > botonPagPrev.y +10 and mouse_pos[1] < botonPagPrev.y + botonPagPrev.height+10:
+            pygame.draw.rect(surface, BLUE, botonPagPrev, 0)
+        else:
+            pygame.draw.rect(surface, DARK_BLUE, botonPagPrev, 0)
+
+        if mouse_pos[0] > botonPagSig.x + 10 and mouse_pos[0] < botonPagSig.x + 10 + botonPagSig.width and mouse_pos[1] > botonPagSig.y +10 and mouse_pos[1] < botonPagSig.y + botonPagSig.height+10:
+            pygame.draw.rect(surface, BLUE, botonPagSig, 0)
+        else:
+            pygame.draw.rect(surface, DARK_BLUE, botonPagSig, 0)
+
+        
+        pygame.font.init()
+
+        font = pygame.font.SysFont("Console", 35)
+        # font.set_bold(True)
+        textPagPrev = font.render("<", True, BEIGE)
+        textPagSig = font.render(">", True, BEIGE)
+        textRectPagPrev = textPagPrev.get_rect(center = botonPagPrev.center)
+        textRectPagSig = textPagSig.get_rect(center = botonPagSig.center)
+
+        surface.blit(textPagPrev, textRectPagPrev)
+        surface.blit(textPagSig, textRectPagSig)
+
+    

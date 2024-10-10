@@ -11,26 +11,32 @@ class Tablero():
     # matrizValoresBloques: contiene los valores de las columnas y filas para saber que boton esta marcado
     # matrizIndices: contiene los valores de los indices que indican los cuadros a marcar para resolver el puzzle
 
-    def __init__(self, main, screen, blockCant, matrizValoresBloques, matrizIndices,matrizSolucion):
+    def __init__(self, main, screen, blockCant, matrizValoresBloques, matrizSolucion):
         self.main = main
         self.screen = screen
         self.blockCant = blockCant
         self.matrizValoresBloques = matrizValoresBloques
-        self.matrizIndices = matrizIndices
-        self.grilla = Grid(blockCant, matrizValoresBloques, matrizIndices, matrizSolucion)
+        self.grilla = Grid(blockCant, matrizValoresBloques, matrizSolucion)
+
+        self.dibujarInicio = True # variable para dibujar una vez la grilla al meterse al tablero
 
         # variables para calcular tiempo en pantalla de puzle completado
-        self.puzzleCompletado = False
+        self.puzleCompletado = False
         self.tiempoPuzleCompletado = 0
         self.contadorPuzleCompletado = 0
+
+        
 
     
     # metodo para ejecutar la etapa del tablero
     def etapaTablero(self):
-        
-        if not self.puzzleCompletado:
-            self.draw()
+
+        if self.dibujarInicio:
             self.grilla.drawGrid(self.screen)
+            self.dibujarInicio = False
+        
+        if not self.puzleCompletado:
+            self.draw()
             self.manejarEventos(self.matrizValoresBloques)
 
         else:
@@ -50,7 +56,8 @@ class Tablero():
                 pos = pygame.mouse.get_pos()
                 grillaPos = self.grilla.getGridPos()
 
-                if (pos[0] > grillaPos[0] and pos[0] < 800) and (pos[1] > grillaPos[1] and pos[1] < 520): # si esta dentro de la grilla
+                # si esta dentro de la grilla
+                if (pos[0] > grillaPos[0] and pos[0] < 800) and (pos[1] > grillaPos[1] and pos[1] < 520): 
                  
                     col = int((pos[0] - grillaPos[0]) // (self.grilla.getGridSize() // self.blockCant))
                     fi = int((pos[1] - grillaPos[1]) // (self.grilla.getGridSize() // self.blockCant))
@@ -64,24 +71,32 @@ class Tablero():
                     
                         if pygame.mouse.get_pressed()[0] == 1:   # si no esta marcado marcarlo con value
                             self.matrizValoresBloques[columna][fila] = 1
-                            self.grilla.comprobarTablero() # Comprobamos si al marcarlo se resuelve el tablero
+                            self.puzleCompletado = self.grilla.comprobarTablero() # Comprobamos si al marcarlo se resuelve el tablero
                             self.grilla.comprobarTachar(fila, columna)
+                       
                         elif pygame.mouse.get_pressed()[2] == 1:
                             self.matrizValoresBloques[columna][fila] = 2
+
                     else:
                         self.matrizValoresBloques[columna][fila] = 0  # si esta marcado desmarcarlo
-                        self.grilla.comprobarTablero() # Comprobamos si al desmarcarlo se resuelve el tablero
+                        self.puzzleCompletado = self.grilla.comprobarTablero() # Comprobamos si al desmarcarlo se resuelve el tablero
                         self.grilla.comprobarTachar(fila, columna)
+
+                
                 # funcion para salir del tablero
                 elif pos[0] > 33 and pos[0] < 95  and pos[1] > 25 and pos[1] < 65:
-                    
+                    self.dibujarInicio = True
                     self.main.cambiarEtapa(self.main.Etapa.NIVELES)
 
 
                 # funcion para resetear el tablero
                 elif pos[0] > 110 and pos[0] < 200 and pos[1] > 25 and pos[1] < 65:
                     self.matrizValoresBloques = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
-                    self.grilla = Grid(self.blockCant, self.matrizValoresBloques, self.matrizIndices, self.grilla.matrizSolucion)
+                    self.grilla = Grid(self.blockCant, self.matrizValoresBloques, self.grilla.matrizSolucion)
+
+
+                self.grilla.drawGrid(self.screen)  # redibujar la grilla
+
 
     # metodo para dibujar la etapa del tablero
     def draw(self):
@@ -102,8 +117,8 @@ class Tablero():
         # pygame.draw.rect(self.screen, BEIGE, (33, 110, 240,100),0)
         self.screen.blit(explicacion1,(42, 120))
         self.screen.blit(explicacion2,(45, 140))
-        self.screen.blit(explicacion3,(48, 500))
-        self.screen.blit(explicacion4,(80, 510))
+        self.screen.blit(explicacion3,(53, 480))
+        self.screen.blit(explicacion4,(128, 490))
 
     # metodo para dibujar la pantalla de puzle completado
     def puzleCompletado(self):
@@ -163,8 +178,7 @@ class Tablero():
         if (currentTime - self.tiempoPuzleCompletado) > 500: #  si ha pasado medio segundo desde el ultimo cambio de color
             self.tiempoPuzleCompletado = currentTime
             self.contadorPuzleCompletado += 1
-            print(f"contador: {self.contadorPuzleCompletado}")
-
+ 
         if  self.contadorPuzleCompletado > 10  :  # si han pasado 6 segundos en esta pantalla, salir a niveles
             self.main.cambiarEtapa(self.main.Etapa.NIVELES)
 

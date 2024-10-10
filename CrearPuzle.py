@@ -37,7 +37,7 @@ class CrearPuzle():
         
         if self.dibujarInicio:
             self.drawGrid(self.screen)
-            self.inicio = False
+            self.dibujarInicio = False
 
         self.draw()
         self.manejarEventos(self.matrizValoresBloques)

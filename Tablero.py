@@ -16,6 +16,7 @@ class Tablero():
         self.screen = screen
         self.blockCant = blockCant
         self.matrizValoresBloques = matrizValoresBloques
+        self.matrizSolucion = matrizSolucion
         self.grilla = Grid(blockCant, matrizValoresBloques, matrizSolucion)
 
         self.dibujarInicio = True # variable para dibujar una vez la grilla al meterse al tablero
@@ -40,7 +41,7 @@ class Tablero():
             self.manejarEventos(self.matrizValoresBloques)
 
         else:
-            self.puzleCompletado()
+            self.ejecutarPuzleCompletado()
         
         pygame.display.update()
     
@@ -55,9 +56,9 @@ class Tablero():
 
                 pos = pygame.mouse.get_pos()
                 grillaPos = self.grilla.getGridPos()
-
+                grillaSize = self.grilla.getGridSize()
                 # si esta dentro de la grilla
-                if (pos[0] > grillaPos[0] and pos[0] < 800) and (pos[1] > grillaPos[1] and pos[1] < 520): 
+                if ( grillaPos[0] < pos[0] < grillaPos[0] + grillaSize) and (grillaPos[1] < pos[1] < grillaPos[1] + grillaSize): 
                  
                     col = int((pos[0] - grillaPos[0]) // (self.grilla.getGridSize() // self.blockCant))
                     fi = int((pos[1] - grillaPos[1]) // (self.grilla.getGridSize() // self.blockCant))
@@ -121,7 +122,7 @@ class Tablero():
         self.screen.blit(explicacion4,(128, 490))
 
     # metodo para dibujar la pantalla de puzle completado
-    def puzleCompletado(self):
+    def ejecutarPuzleCompletado(self):
 
         # manejar salida del juego
         for event in pygame.event.get():
@@ -136,18 +137,18 @@ class Tablero():
         # dibujar imagen creada
         superficieImagen = pygame.Surface((350, 350))
         superficieImagenBorde = pygame.Surface((370, 370))
-        superficieImagen.fill(BEIGE)
         superficieImagenBorde.fill(DARK_BEIGE)
-        bloqueImagenSize = 400//self.blockCant
+        superficieImagen.fill(BEIGE)
+        bloqueImagenSize = 350//self.blockCant
 
         for x in range(0, self.blockCant):     # filas
             for y in range(0, self.blockCant): # columnas
-                if self.matrizValoresBloques[x][y] == 1:
-                    pygame.draw.rect(superficieImagen, DARK_BLUE, (bloqueImagenSize*x, bloqueImagenSize*y, bloqueImagenSize,bloqueImagenSize),0)
+                if self.matrizSolucion[x][y] == 1:
+                    pygame.draw.rect(superficieImagen, DARK_BLUE, (bloqueImagenSize*y, bloqueImagenSize*x, bloqueImagenSize,bloqueImagenSize),0)
 
         surface.blit(superficieImagenBorde, (250, 155))
         surface.blit(superficieImagen, (260, 165))  
-
+        
         # dibujar mensaje       
         pygame.font.init()
         mensajeRect = pygame.Rect(((WINDOW_WIDTH - 20)//2 - 200, (WINDOW_HEIGHT -20)//2 - 380, 400, 300))
@@ -180,6 +181,7 @@ class Tablero():
             self.contadorPuzleCompletado += 1
  
         if  self.contadorPuzleCompletado > 10  :  # si han pasado 6 segundos en esta pantalla, salir a niveles
+            # self.puzleCompletado = False
             self.main.cambiarEtapa(self.main.Etapa.NIVELES)
 
             # reiniciar variables por  si acaso

@@ -3,7 +3,6 @@ from time import sleep
 import pygame, sys
 from BotonBloque import BotonBloque
 from constantes import *
-from Grid import Grid
 from BotonTablero import BotonTablero
 
 # Clase para dibujar la etapa donde se resuelve el puzle
@@ -219,6 +218,10 @@ class CrearPuzle():
             f.write("\n")
 
         f.close()
+
+        self.matrizValoresBloques = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
+        self.matrizBloques = self.inicializarMatrizBloques(self.matrizValoresBloques)
+        self.userText = ''
         
     def drawGrid(self, screen):
     

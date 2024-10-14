@@ -1,6 +1,5 @@
 import pygame
 from constantes import *
-import numpy as np
 
 class BotonBloque():
     def __init__(self, rect, fila, columna, matrizValoresBloques):

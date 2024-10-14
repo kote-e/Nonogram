@@ -9,22 +9,32 @@ import os
 
 class Lectura:
     def __init__(self, archivo_solucion, archivo_guardado):
-        self.archivo_solucion = archivo_solucion
-        self.archivo_guardado = archivo_guardado
+        self.archivo_puzle = archivo_puzle
 
-    def leer_matriz(self, archivo):
-        matriz = []
+    def leer_matriz(self):
+        matriz_solucion = []
+        matriz_usuario = []
+        completado = False
+        progreso = False
         try:
-            if os.path.exists(archivo):  # Verifica si el archivo existe
-                with open(archivo, 'r') as file:
-                    for linea in file:
-                        fila = list(map(int, linea.split()))  # Convierte cada línea en una lista de enteros
-                        matriz.append(fila)
+            if os.path.exists(self.archivo_puzle):
+                with open(self.archivo_puzle, 'r') as file:
+                    completado = file.readline().strip() == 'True'  # si está completo
+                    progreso = file.readline().strip() == 'True'  # si hay progreso
+                    tamaño = int(file.readline().strip())  # Lee el tamaño
+                    # matriz de solución
+                    for _ in range(tamaño):
+                        fila_solucion = list(map(int, file.readline().split()))
+                        matriz_solucion.append(fila_solucion)
+                    # matriz de progreso del usuario
+                    for _ in range(tamaño):
+                        fila_usuario = list(map(int, file.readline().split()))
+                        matriz_usuario.append(fila_usuario)
             else:
-                print(f"Error: El archivo {archivo} no existe.")
+                print(f"Error: El archivo {self.archivo_puzle} no existe.")
         except Exception as e:
-            print(f"Error al leer el archivo {archivo}: {e}")
-        return matriz
+            print(f"Error al leer el archivo {self.archivo_puzle}: {e}")
+        return matriz_solucion, matriz_usuario, progreso, completado
 
     def guardar_matriz(self, matriz):
         try:

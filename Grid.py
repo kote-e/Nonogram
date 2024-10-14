@@ -2,18 +2,21 @@ import pygame
 from constantes import *
 from BotonBloque import BotonBloque
 
+
 class Grid():
 
     initialized = False # variables estaticas para inicializar la matriz una sola vez por tablero
     # matriz de botones
 
-    def __init__(self, blockCant, matrizValoresBloques, matrizIndices):
+    def __init__(self, blockCant, matrizValoresBloques, matrizSolucion):
         self.blockCant = blockCant
         self.blockSize = 0
         self.grillaSize = 410
-        self.grillaPos = (390, 110) # posicion de la grilla en la pantalla
+        self.grillaPos = (405, 130) # posicion de la grilla en la pantalla
         self.matrizBloques = self.inicializarMatrizBloques(matrizValoresBloques)
-        self.matrizIndices = matrizIndices
+        self.matrizValoresBloques = matrizValoresBloques
+        self.matrizSolucion = matrizSolucion
+        self.matrizIndices = self.getIndicesSolución()
        # self.value = 1 # 1 marcado, 2 cruz
 
     def inicializarMatrizBloques(self, matrizValoresBloques):
@@ -43,6 +46,12 @@ class Grid():
         grilla = pygame.Surface((self.grillaSize, self.grillaSize))
         grilla.fill(GREEN)
 
+        superficieImagen = pygame.Surface((240, 240))
+        superficieImagenBorde = pygame.Surface((250, 250))
+
+        superficieImagen.fill(BEIGE)
+        superficieImagenBorde.fill(DARK_BEIGE)
+
         superficieColumnas = pygame.Surface((410, 95))
         superficieFilas = pygame.Surface((95, 410))
 
@@ -51,13 +60,17 @@ class Grid():
 
         pygame.font.init()
         numberSize = 14
+        if self.blockCant == 20:
+            numberSize = 12
+            
         font = pygame.font.SysFont("Comic Sans", numberSize)
+        font.set_bold(True)
 
         for x in range(0, self.blockCant):     # filas
 
             # dibujar fondo indices
-            pygame.draw.rect(superficieColumnas, YELLOW, (x*(self.blockSize + 1) + GRID_MARGIN*(x + 1), 0, self.blockSize, 95), 0)
-            pygame.draw.rect(superficieFilas, YELLOW, (0, x*(self.blockSize + 1) + GRID_MARGIN*(x + 1), 115, self.blockSize), 0) 
+            pygame.draw.rect(superficieColumnas, DARK_BLUE, (x*(self.blockSize + 1) + GRID_MARGIN*(x + 1), 0, self.blockSize, 95), 0)
+            pygame.draw.rect(superficieFilas, DARK_BLUE, (0, x*(self.blockSize + 1) + GRID_MARGIN*(x + 1), 115, self.blockSize), 0) 
 
             for y in range(0, self.blockCant): # columnas
                 
@@ -65,19 +78,96 @@ class Grid():
                 button = self.matrizBloques[x][y]
                 button.draw(grilla)
 
-               
+                paddingColumna = GRID_MARGIN + self.blockSize//2 - numberSize//2
+                paddingFila = self.blockSize//2 - numberSize//2
+
                 # dibujar indices
                 if y < len(self.matrizIndices[0][x]):
-                    text = font.render(str(self.matrizIndices[0][x][y]), True, DARK_BLUE)
-                    superficieColumnas.blit(text, (13 + x*(self.blockSize + 1) + GRID_MARGIN*(x + 1), 6 + (numberSize + 3)*y))
+                    text = font.render(str(self.matrizIndices[0][x][y]), True, BEIGE)
+                    superficieColumnas.blit(text, (paddingColumna + x*(self.blockSize + 1) + GRID_MARGIN*(x + 1), 6 + (numberSize + 3)*y))
 
                 if y < len(self.matrizIndices[1][x]):
-                    text = font.render(str(self.matrizIndices[1][x][y]), True, DARK_BLUE)
-                    superficieFilas.blit(text, (10 + (numberSize + 3)*y , 13 + x*(self.blockSize + 1) + GRID_MARGIN*(x + 1)))
-        
-        screen.blit(superficieColumnas, (390, 10))
-        screen.blit(superficieFilas, (290, 110))
+                    text = font.render(str(self.matrizIndices[1][x][y]), True, BEIGE)
+                    superficieFilas.blit(text, (10 + (numberSize + 3)*y , paddingFila + x*(self.blockSize + 1) + GRID_MARGIN*(x + 1)))
+
+                bloqueImagenSize = 240//self.blockCant
+
+                if self.matrizValoresBloques[x][y] == 1:
+                    pygame.draw.rect(superficieImagen, DARK_BLUE, (bloqueImagenSize*x, bloqueImagenSize*y, bloqueImagenSize,bloqueImagenSize),0)
+
+
+        screen.blit(superficieColumnas, (self.grillaPos[0], self.grillaPos[1] - 105))
+        screen.blit(superficieFilas, (self.grillaPos[0] - 105, self.grillaPos[1]))
         screen.blit(grilla, self.grillaPos)
+        screen.blit(superficieImagenBorde, (30, 195))
+        screen.blit(superficieImagen, (35, 200))
+
+    def comprobarTablero(self):
+        # Cuando se marca un cuadro, las columnas y filas estan invertidas en matrizValoresBloques, por lo que transponemos la matriz
+        matrizTranspuesta = self.getMatrizTranspuesta()
+        """
+        Para ver la matriz impresa
+        for i in range(self.blockCant):
+            print(self.matrizValoresBloques[i])
+        for i in range(self.blockCant):
+            print(matrizTranspuesta[i])
+        """
+        if matrizTranspuesta == self.matrizSolucion:
+            return True
+        else:
+            return False
+    def comprobarFila(self, numFila): # numFila es un entero que indica la fila de matrizValoresBloques a comprobar
+        matrizTranspuesta = self.getMatrizTranspuesta()
+        if matrizTranspuesta[numFila] == self.matrizSolucion[numFila]:
+            return True
+        else:
+            return False
+        
+    def comprobarColumna(self, numColumna): # numColumna es un entero que indica la columna de matrizValoresBloques a comprobar
+        matrizTranspuesta = self.getMatrizTranspuesta()
+        if [matrizTranspuesta[i][numColumna] for i in range(self.blockCant)] == [self.matrizSolucion[i][numColumna] for i in range(self.blockCant)]:
+            return True
+        else:
+            return False
+        
+    def tacharFila(self, numFila):
+        for i in range(self.blockCant):
+            if self.matrizValoresBloques[i][numFila] == 0:
+                self.matrizValoresBloques[i][numFila] = 2
+
+    def tacharColumna(self, numColumna):
+        for i in range(self.blockCant):
+            if self.matrizValoresBloques[numColumna][i] == 0:
+                self.matrizValoresBloques[numColumna][i] = 2
+
+    def comprobarTachar(self, numFila, numColumna):
+        if self.comprobarFila(numFila):
+            self.tacharFila(numFila)
+        if self.comprobarColumna(numColumna):
+            self.tacharColumna(numColumna)
+            
+    def listaAIndice(self, fila): #lista es una lista con 0 y 1
+        indices = []
+        count = 0
+        for i in range(self.blockCant):
+            if fila[i] == 1:
+                count += 1
+                if (i < self.blockCant-1 and fila[i+1] == 0) or (i == self.blockCant-1 and fila[i] == 1):
+                    indices.append(count)
+            elif fila[i] == 0:
+                count = 0
+        return indices
+    
+    def getIndicesSolución(self):
+        indicesColumnas = []
+        indicesFilas = []
+        for i in range(self.blockCant):
+            indicesFilas.append(self.listaAIndice(self.matrizSolucion[i]))
+            columna = [self.matrizSolucion[j][i] for j in range(self.blockCant)]
+            indicesColumnas.append(self.listaAIndice(columna))
+        #print(indicesFilas)
+        #print(indicesColumnas)
+        return [indicesColumnas, indicesFilas]
     
     def getBlockSize(self):
         return self.blockSize   
@@ -87,10 +177,12 @@ class Grid():
 
     def getGridSize(self):  
         return self.grillaSize
-
     
-
-
-       
-        
-
+    def getMatrizTranspuesta(self):
+        matrizTranspuesta = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
+        for i in range(self.blockCant):
+            for j in range(self.blockCant):
+                matrizTranspuesta[j][i] = self.matrizValoresBloques[i][j]
+                if matrizTranspuesta[j][i] == 2:
+                    matrizTranspuesta[j][i] = 0
+        return matrizTranspuesta

@@ -54,8 +54,8 @@ class Main():
     def cambiarEtapa(self, etapa):
         self.etapaJuego = etapa
 
-    def crearTablero(self, blockCant, matrizValoresBloques, matrizSolucion):
-        self.tablero = Tablero((self.main, screen, blockCant, matrizValoresBloques, matrizSolucion))
+    def crearTablero(self, nivel, screen, blockCant, matrizValoresBloques, matrizSolucion):
+        self.tablero = Tablero(self.main, nivel, screen, blockCant, matrizValoresBloques, matrizSolucion)
         self.tablero.grilla.drawGrid(screen)
 
 
@@ -69,7 +69,7 @@ class Main():
 
         self.menu = Menu(self.main, screen)
         self.niveles = Niveles(self.main, screen)
-        self.tablero = Tablero(self.main, screen, blockCant, matrizValoresBloques, matrizSolucion)
+        # self.tablero = Tablero(self.main, screen, blockCant, matrizValoresBloques, matrizSolucion)
         self.dibujo = CrearPuzle(self.main, screen)
         # self.etapaJuego = self.Etapa.TABLERO
         screen.fill(GREEN)

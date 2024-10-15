@@ -1,5 +1,6 @@
 import pygame
 from constantes import *
+from lectura import Lectura
 
 class BotonNivel():
     
@@ -8,9 +9,9 @@ class BotonNivel():
         self.screen = screen
         self.rect = rect
         self.id = archivoId     
-        self.size = 0
-        self.progreso = False
-        self.completado = False
+        self.lector = Lectura(archivoId)
+        self.size, x1, x2, self.progreso, self.completado = self.lector.leer_matriz()
+
 
     def draw(self):
         x_pos = self.rect[0]
@@ -44,7 +45,12 @@ class BotonNivel():
         sizeTextRect = sizeText.get_rect(center = r.center)
 
         # imprimir los estados del nivel
-        if self.progreso:
+        if self.completado:
+            subText = fontSubtitulo.render("completado", True, (97, 135, 70))
+            subTextRect = sizeText.get_rect(centerx = r.centerx - 8, centery = r.centery + 18)
+            self.screen.blit(subText, subTextRect)
+            
+        elif self.progreso:
             subText = fontSubtitulo.render("en progreso", True, RED)
             subTextRect = sizeText.get_rect(centerx = r.centerx - 12, centery = r.centery + 18)
             self.screen.blit(subText, subTextRect)
@@ -53,23 +59,26 @@ class BotonNivel():
             sizeText = font.render(f"BLOQUEADO", True, BEIGE, DARK_BLUE)
             sizeTextRect.centerx -= 20
         
-        elif self.completado :
-            subText = fontSubtitulo.render("completado", True, (97, 135, 70))
-            subTextRect = sizeText.get_rect(centerx = r.centerx - 8, centery = r.centery + 18)
-            self.screen.blit(subText, subTextRect)
 
 
         self.screen.blit(sizeText, sizeTextRect)
         
+
+    def actualizarProgresoCompletado(self, completado, progreso):
+            self.completado = completado
+            self.progreso = progreso
+
 
     def cargarTablero(self):
         self.screen.fill(DARK_BLUE)
         surface = pygame.Surface((WINDOW_WIDTH - 20, WINDOW_HEIGHT - 20))
         surface.fill(GREEN)
         self.screen.blit(surface, (10, 10))
+
         ## llamar a funcion para leer matriz de archivo y pasarselo a tablero como argumento.
 
-        # self.main.crearTablero(screen, blockCant, matrizValoresBloques, matrizIndices, matrizSolucion))
+        tamaño, matrizSolucion, matrizUsuario, x1, x2 = self.lector.leer_matriz()
+
+        self.main.crearTablero(self, self.screen, tamaño, matrizUsuario, matrizSolucion)
         self.main.cambiarEtapa(self.main.Etapa.TABLERO)
         
-

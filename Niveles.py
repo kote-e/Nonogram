@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame, os, sys
 from constantes import *
 from BotonNivel import BotonNivel
 
@@ -10,9 +10,10 @@ class Niveles():
 
         self.pagina  = 0  # cual conjunto de niveles se muestra al mismo tiempo, 10 por pagina
         self.listaBotones = []
-        self.cantidadNiveles = 17
-        self.listaNiveles = [1,0,2,0,3,0,0,1,1,1,1,2,2,3,3,0,0] # arreglo con nombres de archivos de matrices para testear
+        self.cantidadNiveles = 0
+        self.listaNiveles = [] # arreglo con nombres de archivos
 
+        self.crearListaNiveles()
         self.crearBotonesNiveles()
     
     def etapaNiveles(self):
@@ -20,6 +21,19 @@ class Niveles():
         self.manejarEventos()
         pygame.display.update()
     
+    
+    def crearListaNiveles(self):
+        self.cantidadNiveles = 0
+        self.listaNiveles.clear()
+
+        for root, dirs, files in os.walk("./Puzles"):
+            for file in files:
+                if file.endswith(".txt"):
+                    self.listaNiveles.append(f"{root}/{file}")
+                    self.cantidadNiveles += 1
+
+        self.listaNiveles.sort()
+
 
     # Funcion que crea los botones de los niveles y los agrega a la lista de botones
     def crearBotonesNiveles(self):
@@ -35,19 +49,7 @@ class Niveles():
             else:
                 break
 
-            ### valores temporales para mostrar los distintos estados
-            if self.listaNiveles[i + self.pagina*8] == 1:
-                btn.progreso = True
-                btn.size = 10
-            elif self.listaNiveles[i + self.pagina*8] == 2: 
-                btn.size = 10
-                btn.completado = True
-            elif self.listaNiveles[i + self.pagina*8] == 3:
-                btn.size = 20
-            ### fin valores temporales
-
-            self.listaBotones.append(btn)
-            
+            self.listaBotones.append(btn)      
             
     def manejarEventos(self):
         for event in pygame.event.get():
@@ -72,6 +74,7 @@ class Niveles():
 
                 # Boton de retorno
                 if mousePos[0] > WINDOW_WIDTH - 175 + 10 and mousePos[0] < WINDOW_WIDTH - 175 + 90 and mousePos[1] > 40 and mousePos[1] < 100:
+                    
                     self.main.cambiarEtapa(self.main.Etapa.MENU)
 
      
@@ -126,7 +129,6 @@ class Niveles():
            
         self.crearBotonesNiveles()
         pygame.display.update()
-        
 
     def crearBotonRetorno(self, surface):
         mouse_pos = pygame.mouse.get_pos()
@@ -145,7 +147,6 @@ class Niveles():
         text_rect = text.get_rect(center = botonRetornoRect.center)
 
         surface.blit(text, text_rect)
-
 
     def crearBotonesPasarPagina(self, surface):
         mouse_pos = pygame.mouse.get_pos()

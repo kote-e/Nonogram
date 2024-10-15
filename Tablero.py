@@ -11,9 +11,10 @@ class Tablero():
     # matrizValoresBloques: contiene los valores de las columnas y filas para saber que boton esta marcado
     # matrizIndices: contiene los valores de los indices que indican los cuadros a marcar para resolver el puzzle
 
-    def __init__(self, main, screen, blockCant, matrizValoresBloques, matrizSolucion):
+    def __init__(self, main, nivel, screen, blockCant, matrizValoresBloques, matrizSolucion):
         self.main = main
         self.screen = screen
+        self.nivel = nivel
         self.blockCant = blockCant
         self.matrizValoresBloques = matrizValoresBloques
         self.matrizSolucion = matrizSolucion
@@ -87,6 +88,8 @@ class Tablero():
                 # funcion para salir del tablero
                 elif pos[0] > 33 and pos[0] < 95  and pos[1] > 25 and pos[1] < 65:
                     self.dibujarInicio = True
+                    self.nivel.lector.guardar_matriz(self.matrizValoresBloques, self.puzleCompletado, True)
+                    self.nivel.actualizarProgresoCompletado(self.puzleCompletado, True)
                     self.main.cambiarEtapa(self.main.Etapa.NIVELES)
 
 
@@ -180,11 +183,13 @@ class Tablero():
             self.tiempoPuzleCompletado = currentTime
             self.contadorPuzleCompletado += 1
  
-        if  self.contadorPuzleCompletado > 10  :  # si han pasado 6 segundos en esta pantalla, salir a niveles
-            # self.puzleCompletado = False
+        if  self.contadorPuzleCompletado > 8  :  # si han pasado 4 segundos en esta pantalla, salir a niveles
+            
+            self.nivel.actualizarProgresoCompletado(True, False)
+            self.nivel.lector.guardar_matriz(self.matrizValoresBloques, True, False)
             self.main.cambiarEtapa(self.main.Etapa.NIVELES)
 
-            # reiniciar variables por  si acaso
+            # reiniciar variables
             self.contadorPuzleCompletado = 0
             self.tiempoPuzleCompletado = 0
 

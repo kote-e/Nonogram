@@ -201,7 +201,7 @@ class CrearPuzle():
         name = self.userText.lower()
         name = name.replace(" ", "_")
 
-        f = open(f"./Puzles/{name}.txt", "w")
+        f = open(f"./Puzles/{self.blockCant}_{name}.txt", "w")
         f.write("False\n") #puzle Completado
         f.write("False\n") #puzle en progreso
         f.write(f"{self.blockCant}\n")

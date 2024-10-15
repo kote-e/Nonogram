@@ -8,7 +8,7 @@ import os
 
 
 class Lectura:
-    def __init__(self, archivo_solucion, archivo_guardado):
+    def __init__(self, archivo_puzle):
         self.archivo_puzle = archivo_puzle
 
     def leer_matriz(self):

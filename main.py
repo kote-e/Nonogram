@@ -48,6 +48,9 @@ class Main():
         jugando = True
         screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
+        programIcon = pygame.image.load('icono_gato.jpg')
+        pygame.display.set_icon(programIcon)
+
         self.menu = Menu(self.main, screen)
         self.niveles = Niveles(self.main, screen)
         self.dibujo = CrearPuzle(self.main, screen)

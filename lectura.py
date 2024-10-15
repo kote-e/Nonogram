@@ -8,8 +8,8 @@ import os
 
 
 class Lectura:
-    def __init__(self, archivoPuzle):
-        self.archivoPuzle = archivoPuzle
+    def __init__(self, archivo_puzle):
+        self.archivo_puzle = archivo_puzle
 
     def leer_matriz(self):
         tamaño = 0

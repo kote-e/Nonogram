@@ -38,18 +38,22 @@ class Lectura:
 
     def guardar_matriz(self, matriz):
         try:
-            with open(self.archivo_guardado, 'w') as file:
-                for fila in matriz:
-                    file.write(' '.join(map(str, fila)) + '\n')
-            print(f"Matriz guardada en {self.archivo_guardado}")
-        except Exception as e:
-            print(f"Error al guardar la matriz en {self.archivo_guardado}: {e}")
+            with open(self.archivo_puzle, 'r') as file:
+                lineas = file.readlines()[3:]  # Leer de la cuarta línea (solución y progreso)
+            with open(self.archivo_puzle, 'w') as file:
+                file.write(f"{'True' if completado else 'False'}\n")
+                file.write(f"{'True' if progreso else 'False'}\n")
+                file.write(f"{len(matriz_usuario)}\n")
 
-    #  cargar el estado de un Tablero desde la matriz leída
-    def cargar_tablero(self, tablero: Tablero):
-        matriz = self.leer_matriz(self.archivo_solucion)
-        if matriz:
-            tablero.set_matriz(matriz)
+                file.writelines(lineas)
+
+                for fila in matriz_usuario:
+                    file.write(' '.join(map(str, fila)) + '\n')
+
+    def cargar_tablero(self, tablero):
+        matriz_solucion, matriz_usuario, progreso, completado = self.leer_matriz()
+        if matriz_solucion and matriz_usuario:
+            tablero.set_matriz(matriz_usuario)
             print("Tablero cargado con éxito.")
         else:
             print("No se pudo cargar el tablero.")

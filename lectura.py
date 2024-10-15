@@ -8,17 +8,19 @@ import os
 
 
 class Lectura:
-    def __init__(self, archivo_solucion, archivo_guardado):
-        self.archivo_puzle = archivo_puzle
+    def __init__(self, archivoPuzle):
+        self.archivoPuzle = archivoPuzle
 
     def leer_matriz(self):
+        tamaño = 0
         matriz_solucion = []
         matriz_usuario = []
         completado = False
         progreso = False
+
         try:
-            if os.path.exists(self.archivo_puzle):
-                with open(self.archivo_puzle, 'r') as file:
+            if os.path.exists(self.archivoPuzle):
+                with open(self.archivoPuzle, 'r') as file:
                     completado = file.readline().strip() == 'True'  # si está completo
                     progreso = file.readline().strip() == 'True'  # si hay progreso
                     tamaño = int(file.readline().strip())  # Lee el tamaño
@@ -31,24 +33,37 @@ class Lectura:
                         fila_usuario = list(map(int, file.readline().split()))
                         matriz_usuario.append(fila_usuario)
             else:
-                print(f"Error: El archivo {self.archivo_puzle} no existe.")
+                print(f"Error: El archivo {self.archivoPuzle} no existe.")
         except Exception as e:
-            print(f"Error al leer el archivo {self.archivo_puzle}: {e}")
-        return matriz_solucion, matriz_usuario, progreso, completado
+            print(f"Error al leer el archivo {self.archivoPuzle}: {e}")
 
-    def guardar_matriz(self, matriz):
+
+        if not progreso and not completado:
+            matriz_usuario = [[0 for _ in range(tamaño)] for _ in range(tamaño)]
+            
+        return tamaño, matriz_solucion, matriz_usuario, completado, progreso
+
+    def guardar_matriz(self, matriz, completado, progreso):
         try:
-            with open(self.archivo_puzle, 'r') as file:
-                lineas = file.readlines()[3:]  # Leer de la cuarta línea (solución y progreso)
-            with open(self.archivo_puzle, 'w') as file:
+            with open(self.archivoPuzle, 'r') as file:
+                lineas = file.readlines()[3:]
+            file.close()
+            with open(self.archivoPuzle, 'w') as file:
                 file.write(f"{'True' if completado else 'False'}\n")
                 file.write(f"{'True' if progreso else 'False'}\n")
-                file.write(f"{len(matriz_usuario)}\n")
+                file.write(f"{len(matriz)}\n")
 
-                file.writelines(lineas)
+                for i in range(len(matriz)): # Escribir la matriz de solución
+                    file.write(lineas[i])
 
-                for fila in matriz_usuario:
+                for fila in matriz: # Escribir la matriz de progreso
                     file.write(' '.join(map(str, fila)) + '\n')
+            
+            file.close()
+        except Exception as e:
+            print(f"Error al escribir el archivo {self.archivoPuzle}: {e}")
+        
+
 
     def cargar_tablero(self, tablero):
         matriz_solucion, matriz_usuario, progreso, completado = self.leer_matriz()

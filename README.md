@@ -5,13 +5,13 @@ Este proyecto es un juego de Nonogram,El objetivo principal del proyecto es crea
 
 ## Requisitos
 
-- Lenguaje de programación: Python.
-- Biblioteca: Pygame.
-- Sistema operativo: Funciona en cualquier sistema operativo con Python y Pygame (Windows, Linux, macOS). 
+- **Lenguaje de programación:** Python.
+- **Biblioteca:** Pygame.
+- **Sistema operativo:** Funciona en cualquier sistema operativo con Python y Pygame (Windows, Linux, macOS). 
 
 ## Uso
 
-Para ejecutar el juego, corre el siguiente comando: *python Main.py*
+Para ejecutar el juego, corre el siguiente comando: __*python Main.py*__
 
 Al iniciar el juego, se presentará un menú donde puedes seleccionar diferentes niveles o crear tu propio puzle.
 Las celdas se pueden marcar haciendo clic izquierdo y tacharse con clic derecho.

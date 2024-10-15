@@ -144,7 +144,7 @@ class Tablero():
 
 
                 # funcion para resetear el tablero
-                elif pos[0] > 110 and pos[0] < 200 and pos[1] > 25 and pos[1] < 65:
+              
                 elif pos[0] > 110 and pos[0] < 200 and pos[1] > 25 and pos[1] < 65:
                     self.matrizValoresBloques = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
                     self.grilla = Grid(self.blockCant, self.matrizValoresBloques, self.grilla.matrizSolucion)
@@ -154,7 +154,7 @@ class Tablero():
 
 
     # metodo para dibujar la etapa del tablero
-                    self.grilla = Grid(self.blockCant, self.matrizValoresBloques, self.grilla.matrizSolucion)
+                self.grilla = Grid(self.blockCant, self.matrizValoresBloques, self.grilla.matrizSolucion)
 
 
                 self.grilla.drawGrid(self.screen)  # redibujar la grilla

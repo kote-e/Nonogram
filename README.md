@@ -21,3 +21,13 @@ El juego verifica si el puzle está completo automáticamente.
 ![img.png](img.png)
 
 [UML Nonogram](https://lucid.app/lucidchart/eee06729-f13f-48ba-8494-0fed7540034d/edit?viewport_loc=510%2C10%2C3169%2C1623%2CHWEp-vi-RSFO&invitationId=inv_c5365d41-b2af-44b4-a6f5-0860fdcba8db)
+
+### numero de grupo
+
+Integrantes: 
+
+Ariel Eduardo Cisternas Bustos 
+
+María José San Martín Salgado 
+
+Valeria Quiroga Carrere 

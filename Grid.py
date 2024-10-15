@@ -158,12 +158,11 @@ class Grid():
                 count = 0
         return indices
     
-    def contarBloquesIguales(self, matrizValoresBloques, matrizSolucion):
+    def contarBloquesIguales(self, matriz1, matriz2):
         count = 0
-        matrizTranspuesta = self.getMatrizTranspuesta()
         for i in range(self.blockCant):
             for j in range(self.blockCant):
-                if matrizSolucion[i][j] == 1 and matrizTranspuesta[i][j] == 1:
+                if matriz1[i][j] == 1 and matriz2[i][j] == 1:
                     count += 1
         return count
     def contarBloquesMarcados(self, matriz):
@@ -173,8 +172,8 @@ class Grid():
                 if matriz[i][j] == 1:
                     count += 1
         return count
-    def calcularPorcentaje(self, matrizValoresBloques, matrizSolucion):
-        return self.contarBloquesIguales(matrizValoresBloques, matrizSolucion)/self.contarBloquesMarcados(matrizSolucion)
+    def getPorcentajeCompletado(self, matriz, matrizSolucion):
+        return self.contarBloquesIguales(matriz, matrizSolucion)/self.contarBloquesMarcados(matrizSolucion)
     
     def getIndicesSolución(self):
         indicesColumnas = []

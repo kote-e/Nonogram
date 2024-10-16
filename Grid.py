@@ -102,6 +102,22 @@ class Grid():
         screen.blit(superficieImagenBorde, (30, 195))
         screen.blit(superficieImagen, (35, 200))
 
+    def comprobarSolucionTablero(self, matriz):
+        if matriz == self.matrizSolucion:
+            return True
+        else:
+            return False
+        
+    def comprobarFila(self, fila1, fila2):
+        if fila1 == fila2:
+            return True
+        else:
+            return False
+    def comprobarColumna(self, columna1, columna2):
+        if columna1 == columna2:
+            return True
+        else:
+            return False
     def tacharFila(self, numFila):
         for i in range(self.blockCant):
             if self.matrizValoresBloques[i][numFila] == 0:
@@ -117,7 +133,17 @@ class Grid():
             self.tacharFila(numFila)
         if self.comprobarColumna(numColumna):
             self.tacharColumna(numColumna)
-    
+    def listaAIndice(self,fila):
+        indices = []
+        count = 0
+        for i in range(self.blockCant):
+            if fila[i] == 1:
+                count += 1
+                if (i < self.blockCant-1 and fila[i+1] == 0) or (i == self.blockCant-1 and fila[i] == 1):
+                    indices.append(count)
+            elif fila[i] == 0:
+                count = 0
+        return indices
     def contarBloquesIguales(self, matriz1, matriz2):
         count = 0
         for i in range(self.blockCant):
@@ -143,6 +169,14 @@ class Grid():
 
     def getGridSize(self):  
         return self.grillaSize
+    
+    def getMatrizTranspuesta(self, matriz):
+        matrizTranspuesta = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
+        for i in range(self.blockCant):
+            for j in range(self.blockCant):
+                matrizTranspuesta[j][i] = matriz[i][j]
+        return matrizTranspuesta
+    
     def getIndicesSolución(self):
         indicesColumnas = []
         indicesFilas = []

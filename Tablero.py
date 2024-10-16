@@ -115,10 +115,10 @@ class Tablero():
                     
                         if pygame.mouse.get_pressed()[0] == 1:   # si no esta marcado marcarlo con value
                             self.matrizValoresBloques[columna][fila] = 1
-                            self.puzleCompletado = self.grilla.comprobarTablero() # Comprobamos si al marcarlo se resuelve el tablero
+                            self.puzleCompletado = self.grilla.comprobarTablero(self.grilla.getMatrizTranspuesta) # Comprobamos si al marcarlo se resuelve el tablero
                             self.grilla.comprobarTachar(fila, columna)
                        
-                            self.puzleCompletado = self.grilla.comprobarTablero() # Comprobamos si al marcarlo se resuelve el tablero
+                            self.puzleCompletado = self.grilla.comprobarTablero(self.grilla.getMatrizTranspuesta) # Comprobamos si al marcarlo se resuelve el tablero
                             self.grilla.comprobarTachar(fila, columna)
                        
                         elif pygame.mouse.get_pressed()[2] == 1:
@@ -127,11 +127,11 @@ class Tablero():
 
                     else:
                         self.matrizValoresBloques[columna][fila] = 0  # si esta marcado desmarcarlo
-                        self.puzzleCompletado = self.grilla.comprobarTablero() # Comprobamos si al desmarcarlo se resuelve el tablero
+                        self.puzzleCompletado = self.grilla.comprobarTablero(self.grilla.getMatrizTranspuesta) # Comprobamos si al desmarcarlo se resuelve el tablero
                         self.grilla.comprobarTachar(fila, columna)
 
                 
-                        self.puzzleCompletado = self.grilla.comprobarTablero() # Comprobamos si al desmarcarlo se resuelve el tablero
+                        self.puzzleCompletado = self.grilla.comprobarTablero(self.grilla.getMatrizTranspuesta) # Comprobamos si al desmarcarlo se resuelve el tablero
                         self.grilla.comprobarTachar(fila, columna)
 
                 

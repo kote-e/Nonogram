@@ -29,37 +29,6 @@ class Tablero():
         self.contadorPuzleCompletado = 0
 
         
-
-    
-    # metodo para ejecutar la etapa del tablero
-    def etapaTablero(self):
-
-        if self.dibujarInicio:
-            self.grilla.drawGrid(self.screen)
-            self.dibujarInicio = False
-        
-        if not self.puzleCompletado:
-            self.draw()
-            self.manejarEventos(self.matrizValoresBloques)
-
-        else:
-            self.ejecutarPuzleCompletado()
-        
-        pygame.display.update()
-    
-    # metodo para manejar los eventos en el loop del juego 
-        self.grilla = Grid(blockCant, matrizValoresBloques, matrizSolucion)
-
-        self.dibujarInicio = True # variable para dibujar una vez la grilla al meterse al tablero
-
-        # variables para calcular tiempo en pantalla de puzle completado
-        self.puzleCompletado = False
-        self.tiempoPuzleCompletado = 0
-        self.contadorPuzleCompletado = 0
-
-        
-
-    
     # metodo para ejecutar la etapa del tablero
     def etapaTablero(self):
 
@@ -183,71 +152,6 @@ class Tablero():
         self.screen.blit(explicacion3,(53, 480))
         self.screen.blit(explicacion4,(128, 490))
 
-    # metodo para dibujar la pantalla de puzle completado
-    def ejecutarPuzleCompletado(self):
-
-        # manejar salida del juego
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-        # dibujar fondo
-        surface = pygame.Surface((WINDOW_WIDTH - 20, WINDOW_HEIGHT - 20))
-        surface.fill(GREEN)
-
-        # dibujar imagen creada
-        superficieImagen = pygame.Surface((350, 350))
-        superficieImagenBorde = pygame.Surface((370, 370))
-        superficieImagenBorde.fill(DARK_BEIGE)
-        superficieImagen.fill(BEIGE)
-        bloqueImagenSize = 350//self.blockCant
-
-        for x in range(0, self.blockCant):     # filas
-            for y in range(0, self.blockCant): # columnas
-                if self.matrizSolucion[x][y] == 1:
-                    pygame.draw.rect(superficieImagen, DARK_BLUE, (bloqueImagenSize*y, bloqueImagenSize*x, bloqueImagenSize,bloqueImagenSize),0)
-
-        surface.blit(superficieImagenBorde, (250, 155))
-        surface.blit(superficieImagen, (260, 165))  
-        
-        # dibujar mensaje       
-        pygame.font.init()
-        mensajeRect = pygame.Rect(((WINDOW_WIDTH - 20)//2 - 200, (WINDOW_HEIGHT -20)//2 - 380, 400, 300))
-        fontMensaje = pygame.font.SysFont("Console", 60)
-        fontMensaje.set_bold(True)
-
-        
-        # crear animacion 
-        if self.contadorPuzleCompletado % 2 == 0:
-            mensaje1 = fontMensaje.render("¡¡HAS GANADO!!", True, DARK_BLUE)
-            mensaje2 = fontMensaje.render("¡¡HAS GANADO!!", True, BEIGE)
-        else:
-            mensaje1 = fontMensaje.render("¡¡HAS GANADO!!", True, BEIGE)
-            mensaje2 = fontMensaje.render("¡¡HAS GANADO!!", True, DARK_BLUE) 
-        
-        mensaje1Rect = mensaje1.get_rect(center = mensajeRect.center)
-        mensaje2Rect = mensaje1.get_rect(center = mensajeRect.center) 
-        mensaje2Rect.x = mensaje2Rect.x + 6
-        mensaje2Rect.y = mensaje2Rect.y + 6    
-        surface.blit(mensaje1, mensaje1Rect)
-        surface.blit(mensaje2, mensaje2Rect)
-        self.screen.blit(surface, (10,10))
-        pygame.font.init()
-        fontExplicacion = pygame.font.SysFont("Console", 14)
-
-        explicacion1 = fontExplicacion.render("Click izquierdo para marcar,", True, DARK_BLUE)
-        explicacion2 = fontExplicacion.render("Click derecho para tachar.", True, DARK_BLUE)
-        explicacion3 = fontExplicacion.render("Se guarda automáticamente", True, DARK_BLUE)
-        explicacion4 = fontExplicacion.render("al salir", True, DARK_BLUE)
-        
-        # pygame.draw.rect(self.screen, BEIGE, (33, 110, 240,100),0)
-        self.screen.blit(explicacion1,(42, 120))
-        self.screen.blit(explicacion2,(45, 140))
-        self.screen.blit(explicacion3,(53, 480))
-        self.screen.blit(explicacion4,(128, 490))
-
-    # metodo para dibujar la pantalla de puzle completado
     def ejecutarPuzleCompletado(self):
 
         # manejar salida del juego

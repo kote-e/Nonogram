@@ -108,16 +108,6 @@ class Grid():
         else:
             return False
         
-    def comprobarFila(self, fila1, fila2):
-        if fila1 == fila2:
-            return True
-        else:
-            return False
-    def comprobarColumna(self, columna1, columna2):
-        if columna1 == columna2:
-            return True
-        else:
-            return False
     def tacharFila(self, numFila):
         for i in range(self.blockCant):
             if self.matrizValoresBloques[i][numFila] == 0:
@@ -129,9 +119,9 @@ class Grid():
                 self.matrizValoresBloques[numColumna][i] = 2
 
     def comprobarTachar(self, numFila, numColumna):
-        if self.comprobarFila(numFila):
+        if (self.getMatrizTranspuesta(self.matrizValoresBloques)[numFila] == self.matrizSolucion[numFila]):
             self.tacharFila(numFila)
-        if self.comprobarColumna(numColumna):
+        if ([self.getMatrizTranspuesta(self.matrizValoresBloques)[i][numColumna] for i in range(self.blockCant)] == [self.matrizSolucion[i][numColumna] for i in range(self.blockCant)]):
             self.tacharColumna(numColumna)
     def listaAIndice(self,fila):
         indices = []
@@ -175,6 +165,9 @@ class Grid():
         for i in range(self.blockCant):
             for j in range(self.blockCant):
                 matrizTranspuesta[j][i] = matriz[i][j]
+                if matrizTranspuesta[j][i] == 2:
+                    matrizTranspuesta[j][i] = 0
+            
         return matrizTranspuesta
     
     def getIndicesSolución(self):

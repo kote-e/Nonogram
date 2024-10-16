@@ -164,7 +164,7 @@ class Grid():
         matrizTranspuesta = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
         for i in range(self.blockCant):
             for j in range(self.blockCant):
-                matrizTranspuesta[j][i] = self.matrizValoresBloques[i][j]
+                matrizTranspuesta[j][i] = matriz[i][j]
                 if matrizTranspuesta[j][i] == 2:
                     matrizTranspuesta[j][i] = 0
         return matrizTranspuesta

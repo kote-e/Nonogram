@@ -29,11 +29,7 @@ class TestGrid(unittest.TestCase):
             [0,0,1,1,1,1,1,1,0,0],
             [0,0,0,0,0,0,0,0,0,0]
         ]
-        self.matrizIndices = [ #Indices de la matriz solución
-            [[1],[1],[4,1],[1],[1],[1],[1],[4,1],[1],[1]],
-            [[1,1],[1,1],[1,1],[1,1],[],[],[1,1],[1,1],[6],[]]
-        ]
-        self.grid = Grid(self.blockCant, self.matrizUsuario, self.matrizIndices, self.matrizSolucion)
+        self.grid = Grid(self.blockCant, self.matrizUsuario, self.matrizSolucion)
 
     def test_getMatrizTranspuesta(self):
         matrizOriginal = [

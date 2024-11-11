@@ -11,6 +11,7 @@ from Niveles import Niveles
 from Tablero import Tablero
 from CrearPuzle import CrearPuzle
 from CrearPuzle import CrearPuzle
+from Musica import Musica
 
 # Valores temporales para probar el tablero
 
@@ -23,6 +24,7 @@ class Main():
         self.niveles = 0
         self.dibujo = 0
         self.tablero = 0
+        self.musica = Musica("Nonogram/Undertale-OST-068-Death-by-Glamour.mp3")
 
     class Etapa(Enum):
      
@@ -53,6 +55,7 @@ class Main():
         self.dibujo = CrearPuzle(self.main, screen)
         # self.etapaJuego = self.Etapa.TABLERO
         screen.fill(GREEN)
+        self.musica.reproducir_musica()
         pygame.display.set_caption("Nonogram")
         
         
@@ -79,7 +82,9 @@ class Main():
                 self.dibujo.etapaDibujo()
 
             pygame.display.flip()
-        
+        self.musica.detener_musica()
+        pygame.quit()
+        sys.exit()
 
 
 if __name__ == "__main__":

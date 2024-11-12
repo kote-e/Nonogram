@@ -24,7 +24,7 @@ class Main():
         self.niveles = 0
         self.dibujo = 0
         self.tablero = 0
-        self.musica = Musica("Nonogram/Undertale-OST-068-Death-by-Glamour.mp3")
+        self.musica = Musica("")
 
     class Etapa(Enum):
      

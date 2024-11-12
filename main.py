@@ -24,7 +24,7 @@ class Main():
         self.niveles = 0
         self.dibujo = 0
         self.tablero = 0
-        self.musica = Musica("")
+        self.musica = Musica("Nonogram/Lost-Woods-Legend-of-Zelda-Ocarina-of-Time-OST-Rema.mp3")
 
     class Etapa(Enum):
      

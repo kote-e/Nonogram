@@ -10,7 +10,7 @@ class BotonNivel():
         self.rect = rect
         self.id = archivoId     
         self.lector = Lectura(archivoId)
-        self.size, x1, x2, self.progreso, self.completado = self.lector.leer_matriz()
+        self.size, x1, x2, self.completado, self.progreso = self.lector.leer_matriz()
 
 
     def draw(self):

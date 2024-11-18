@@ -40,8 +40,13 @@ class Lectura:
 
         if not progreso and not completado:
             matriz_usuario = [[0 for _ in range(tamaño)] for _ in range(tamaño)]
+
+
+        nombre = self.archivoPuzle.split("\\")[-1]
+        nombre = nombre.split("_")[-1]
+        nombre = nombre.split(".")[0]
             
-        return tamaño, matriz_solucion, matriz_usuario, completado, progreso
+        return tamaño, matriz_solucion, matriz_usuario, completado, progreso, nombre
 
     def guardar_matriz(self, matriz, completado, progreso):
         try:

@@ -41,27 +41,30 @@ class BotonNivel():
         fontSubtitulo = pygame.font.SysFont("Console", 15)
 
         r = pygame.Rect(self.rect)
+
         sizeText = font.render(f"{self.size} x {self.size}", True, DARK_BLUE)
         sizeTextRect = sizeText.get_rect(center = r.center)
+
+        
+        self.screen.blit(sizeText, sizeTextRect)
 
         # imprimir los estados del nivel
         if self.completado:
             subText = fontSubtitulo.render("completado", True, (97, 135, 70))
-            subTextRect = sizeText.get_rect(centerx = r.centerx - 8, centery = r.centery + 18)
+            subTextRect = subText.get_rect(center = r.center)
+            subTextRect.y += 18
             self.screen.blit(subText, subTextRect)
+        
             
         elif self.progreso:
             subText = fontSubtitulo.render("en progreso", True, RED)
-            subTextRect = sizeText.get_rect(centerx = r.centerx - 12, centery = r.centery + 18)
+            subTextRect = subText.get_rect(center = r.center)
+            subTextRect.y += 18
+            #subTextRect = sizeText.get_rect(centerx = r.centerx - 12, centery = r.centery + 18)
             self.screen.blit(subText, subTextRect)
-            
-        elif self.size == 0:
-            sizeText = font.render(f"BLOQUEADO", True, BEIGE, DARK_BLUE)
-            sizeTextRect.centerx -= 20
+        
         
 
-
-        self.screen.blit(sizeText, sizeTextRect)
         
 
     def actualizarProgresoCompletado(self, completado, progreso):

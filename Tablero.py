@@ -6,7 +6,6 @@ from Grid import Grid
 from BotonTablero import BotonTablero
 
 # Clase para dibujar la etapa donde se resuelve el puzle
-# Clase para dibujar la etapa donde se resuelve el puzle
 class Tablero():
 
     # matrizValoresBloques: contiene los valores de las columnas y filas para saber que boton esta marcado
@@ -27,7 +26,6 @@ class Tablero():
         self.puzleCompletado = False
         self.tiempoPuzleCompletado = 0
         self.contadorPuzleCompletado = 0
-
         
     # metodo para ejecutar la etapa del tablero
     def etapaTablero(self):
@@ -116,8 +114,13 @@ class Tablero():
                 elif pos[0] > 110 and pos[0] < 200 and pos[1] > 25 and pos[1] < 65:
                     self.matrizValoresBloques = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
                     self.grilla = Grid(self.blockCant, self.matrizValoresBloques, self.grilla.matrizSolucion)
-
-
+                
+                # funcion para obtener una pista
+                elif pos[0] > 250 and pos[0] < 320 and pos[1] > 25 and pos[1] < 65:
+                    self.grilla.getPista()
+                    self.puzleCompletado = self.grilla.comprobarSolucionTablero(self.grilla.getMatrizTranspuesta(self.matrizValoresBloques))
+                    if self.puzleCompletado == True:
+                        self.ejecutarPuzleCompletado
                 self.grilla.drawGrid(self.screen)  # redibujar la grilla
 
 
@@ -133,10 +136,10 @@ class Tablero():
 
         botonSalir = BotonTablero(self.screen, "salir", (33, 25, 62, 40))
         botonResetear = BotonTablero(self.screen, "reiniciar", (115, 25, 100, 40))
-        botonSalir = BotonTablero(self.screen, "salir", (33, 25, 62, 40))
-        botonResetear = BotonTablero(self.screen, "reiniciar", (115, 25, 100, 40))
+        botonPista = BotonTablero(self.screen, "pista", (250, 25, 70, 40))
         botonSalir.draw()
         botonResetear.draw()
+        botonPista.draw()
 
         pygame.font.init()
         fontExplicacion = pygame.font.SysFont("Console", 14)

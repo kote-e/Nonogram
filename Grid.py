@@ -1,4 +1,4 @@
-import pygame
+import pygame, random
 from constantes import *
 from BotonBloque import BotonBloque
 
@@ -150,6 +150,15 @@ class Grid():
         return count
     def getPorcentajeCompletado(self, matriz, matrizSolucion):
         return self.contarBloquesIguales(matriz, matrizSolucion)/self.contarBloquesMarcados(matrizSolucion)
+    def getPista(self):
+        if self.getMatrizTranspuesta(self.matrizValoresBloques) != self.matrizSolucion:
+            while True:
+                rand_x = random.randint(0, self.blockCant - 1)
+                rand_y = random.randint(0, self.blockCant - 1)
+                if ((self.matrizValoresBloques[rand_y][rand_x] == 0 or self.matrizValoresBloques[rand_y][rand_x] == 2) and self.matrizSolucion[rand_x][rand_y] == 1):
+                    self.matrizValoresBloques[rand_y][rand_x] = 1
+                    self.comprobarTachar(rand_x, rand_y)
+                break
     
     def getBlockSize(self):
         return self.blockSize   

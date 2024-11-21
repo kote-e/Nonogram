@@ -44,26 +44,20 @@ class BotonNivel():
 
         sizeText = font.render(f"{self.size} x {self.size}", True, DARK_BLUE)
         sizeTextRect = sizeText.get_rect(center = r.center)
-
-        
         self.screen.blit(sizeText, sizeTextRect)
 
+    
         # imprimir los estados del nivel
+        subText = None
         if self.completado:
             subText = fontSubtitulo.render("completado", True, (97, 135, 70))
-            subTextRect = subText.get_rect(center = r.center)
-            subTextRect.y += 18
-            self.screen.blit(subText, subTextRect)
-        
-            
         elif self.progreso:
             subText = fontSubtitulo.render("en progreso", True, RED)
+
+        if subText != None:
             subTextRect = subText.get_rect(center = r.center)
             subTextRect.y += 18
-            #subTextRect = sizeText.get_rect(centerx = r.centerx - 12, centery = r.centery + 18)
             self.screen.blit(subText, subTextRect)
-        
-        
 
         
 

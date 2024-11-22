@@ -11,13 +11,14 @@ class Tablero():
     # matrizValoresBloques: contiene los valores de las columnas y filas para saber que boton esta marcado
     # matrizIndices: contiene los valores de los indices que indican los cuadros a marcar para resolver el puzzle
 
-    def __init__(self, main, nivel, screen, blockCant, matrizValoresBloques, matrizSolucion):
+    def __init__(self, main, nivel, screen, blockCant, matrizValoresBloques, matrizSolucion, pistas):
         self.main = main
         self.screen = screen
         self.nivel = nivel
         self.blockCant = blockCant
         self.matrizValoresBloques = matrizValoresBloques
         self.matrizSolucion = matrizSolucion
+        self.pistas = pistas
         self.grilla = Grid(blockCant, matrizValoresBloques, matrizSolucion)
 
         self.dibujarInicio = True # variable para dibujar una vez la grilla al meterse al tablero
@@ -104,7 +105,7 @@ class Tablero():
                 # funcion para salir del tablero
                 elif pos[0] > 33 and pos[0] < 95  and pos[1] > 25 and pos[1] < 65:
                     self.dibujarInicio = True
-                    self.nivel.lector.guardar_matriz(self.matrizValoresBloques, self.puzleCompletado, True)
+                    self.nivel.lector.guardar_matriz(self.matrizValoresBloques, self.puzleCompletado, True, self.pistas)
                     self.nivel.actualizarProgresoCompletado(self.puzleCompletado, True)
                     self.main.cambiarEtapa(self.main.Etapa.NIVELES)
 
@@ -114,13 +115,21 @@ class Tablero():
                 elif pos[0] > 110 and pos[0] < 200 and pos[1] > 25 and pos[1] < 65:
                     self.matrizValoresBloques = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
                     self.grilla = Grid(self.blockCant, self.matrizValoresBloques, self.grilla.matrizSolucion)
+                    if self.blockCant == 5:
+                        self.pistas = 1
+                    elif self.blockCant == 10:
+                        self.pistas = 3
+                    elif self.blockCant == 20:
+                        self.pistas = 5
                 
                 # funcion para obtener una pista
                 elif pos[0] > 250 and pos[0] < 320 and pos[1] > 25 and pos[1] < 65:
-                    self.grilla.getPista()
-                    self.puzleCompletado = self.grilla.comprobarSolucionTablero(self.grilla.getMatrizTranspuesta(self.matrizValoresBloques))
-                    if self.puzleCompletado == True:
-                        self.ejecutarPuzleCompletado
+                    if self.pistas > 0:
+                        self.grilla.getPista()
+                        self.puzleCompletado = self.grilla.comprobarSolucionTablero(self.grilla.getMatrizTranspuesta(self.matrizValoresBloques))
+                        if self.puzleCompletado == True:
+                            self.ejecutarPuzleCompletado
+                        self.pistas -= 1
                 self.grilla.drawGrid(self.screen)  # redibujar la grilla
 
 
@@ -136,7 +145,7 @@ class Tablero():
 
         botonSalir = BotonTablero(self.screen, "salir", (33, 25, 62, 40))
         botonResetear = BotonTablero(self.screen, "reiniciar", (115, 25, 100, 40))
-        botonPista = BotonTablero(self.screen, "pista", (250, 25, 70, 40))
+        botonPista = BotonTablero(self.screen, " pistas (" + str(self.pistas) + ")", (240, 25, 110, 40))
         botonSalir.draw()
         botonResetear.draw()
         botonPista.draw()
@@ -216,7 +225,7 @@ class Tablero():
         if  self.contadorPuzleCompletado > 8  :  # si han pasado 4 segundos en esta pantalla, salir a niveles
             
             self.nivel.actualizarProgresoCompletado(True, False)
-            self.nivel.lector.guardar_matriz(self.matrizValoresBloques, True, False)
+            self.nivel.lector.guardar_matriz(self.matrizValoresBloques, True, False, self.pistas)
             self.main.cambiarEtapa(self.main.Etapa.NIVELES)
 
             # reiniciar variables

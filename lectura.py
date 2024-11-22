@@ -17,6 +17,7 @@ class Lectura:
         matriz_usuario = []
         completado = False
         progreso = False
+        pistas = 0
 
         try:
             if os.path.exists(self.archivoPuzle):
@@ -24,6 +25,7 @@ class Lectura:
                     completado = file.readline().strip() == 'True'  # si está completo
                     progreso = file.readline().strip() == 'True'  # si hay progreso
                     tamaño = int(file.readline().strip())  # Lee el tamaño
+                    pistas = int(file.readline().strip())  # cantidad de pistas
                     # matriz de solución
                     for _ in range(tamaño):
                         fila_solucion = list(map(int, file.readline().split()))
@@ -41,17 +43,18 @@ class Lectura:
         if not progreso and not completado:
             matriz_usuario = [[0 for _ in range(tamaño)] for _ in range(tamaño)]
             
-        return tamaño, matriz_solucion, matriz_usuario, completado, progreso
+        return tamaño, matriz_solucion, matriz_usuario, completado, progreso, pistas
 
-    def guardar_matriz(self, matriz, completado, progreso):
+    def guardar_matriz(self, matriz, completado, progreso, pistas):
         try:
             with open(self.archivoPuzle, 'r') as file:
-                lineas = file.readlines()[3:]
+                lineas = file.readlines()[4:]
             file.close()
             with open(self.archivoPuzle, 'w') as file:
                 file.write(f"{'True' if completado else 'False'}\n")
                 file.write(f"{'True' if progreso else 'False'}\n")
                 file.write(f"{len(matriz)}\n")
+                file.write(f"{pistas}\n")
 
                 for i in range(len(matriz)): # Escribir la matriz de solución
                     file.write(lineas[i])
@@ -66,7 +69,7 @@ class Lectura:
 
 
     def cargar_tablero(self, tablero):
-        matriz_solucion, matriz_usuario, progreso, completado = self.leer_matriz()
+        matriz_solucion, matriz_usuario, progreso, completado, pistas = self.leer_matriz()
         if matriz_solucion and matriz_usuario:
             tablero.set_matriz(matriz_usuario)
             print("Tablero cargado con éxito.")

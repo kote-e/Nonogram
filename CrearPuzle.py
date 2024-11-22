@@ -205,6 +205,12 @@ class CrearPuzle():
         f.write("False\n") #puzle Completado
         f.write("False\n") #puzle en progreso
         f.write(f"{self.blockCant}\n")
+        if self.blockCant == 5:
+            f.write("1\n")
+        elif self.blockCant == 10:
+            f.write("3\n")
+        elif self.blockCant == 20:
+            f.write("5\n")
         
         matrizTranspuesta = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
         for i in range(self.blockCant):

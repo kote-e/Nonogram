@@ -158,7 +158,7 @@ class Grid():
                 if ((self.matrizValoresBloques[rand_y][rand_x] == 0 or self.matrizValoresBloques[rand_y][rand_x] == 2) and self.matrizSolucion[rand_x][rand_y] == 1):
                     self.matrizValoresBloques[rand_y][rand_x] = 1
                     self.comprobarTachar(rand_x, rand_y)
-                break
+                    break
     
     def getBlockSize(self):
         return self.blockSize   

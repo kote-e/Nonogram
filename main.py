@@ -35,8 +35,8 @@ class Main():
     def cambiarEtapa(self, etapa):
         self.etapaJuego = etapa
 
-    def crearTablero(self, nivel, screen, blockCant, matrizValoresBloques, matrizSolucion, pistas):
-        self.tablero = Tablero(self.main, nivel, screen, blockCant, matrizValoresBloques, matrizSolucion, pistas)
+    def crearTablero(self, nivel, screen, blockCant, matrizValoresBloques, matrizSolucion, nombre, pistas):
+        self.tablero = Tablero(self.main, nivel, screen, blockCant, matrizValoresBloques, matrizSolucion, nombre, pistas)
         self.tablero.grilla.drawGrid(screen)
 
 

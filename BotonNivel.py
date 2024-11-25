@@ -10,8 +10,7 @@ class BotonNivel():
         self.rect = rect
         self.id = archivoId     
         self.lector = Lectura(archivoId)
-        self.size, x1, x2, self.progreso, self.completado, pistas = self.lector.leer_matriz()
-
+        self.size, self.matrizSolucion, self.matrizUsuario, self.completado, self.progreso, self.nombre, self.pistas = self.lector.leer_matriz()
 
     def draw(self):
         x_pos = self.rect[0]
@@ -41,27 +40,24 @@ class BotonNivel():
         fontSubtitulo = pygame.font.SysFont("Console", 15)
 
         r = pygame.Rect(self.rect)
+
         sizeText = font.render(f"{self.size} x {self.size}", True, DARK_BLUE)
         sizeTextRect = sizeText.get_rect(center = r.center)
+        self.screen.blit(sizeText, sizeTextRect)
 
+    
         # imprimir los estados del nivel
+        subText = None
         if self.completado:
             subText = fontSubtitulo.render("completado", True, (97, 135, 70))
-            subTextRect = sizeText.get_rect(centerx = r.centerx - 8, centery = r.centery + 18)
-            self.screen.blit(subText, subTextRect)
-            
         elif self.progreso:
             subText = fontSubtitulo.render("en progreso", True, RED)
-            subTextRect = sizeText.get_rect(centerx = r.centerx - 12, centery = r.centery + 18)
+
+        if subText != None:
+            subTextRect = subText.get_rect(center = r.center)
+            subTextRect.y += 18
             self.screen.blit(subText, subTextRect)
-            
-        elif self.size == 0:
-            sizeText = font.render(f"BLOQUEADO", True, BEIGE, DARK_BLUE)
-            sizeTextRect.centerx -= 20
-        
 
-
-        self.screen.blit(sizeText, sizeTextRect)
         
 
     def actualizarProgresoCompletado(self, completado, progreso):
@@ -75,10 +71,6 @@ class BotonNivel():
         surface.fill(GREEN)
         self.screen.blit(surface, (10, 10))
 
-        ## llamar a funcion para leer matriz de archivo y pasarselo a tablero como argumento.
-
-        tamaño, matrizSolucion, matrizUsuario, x1, x2, pistas = self.lector.leer_matriz()
-
-        self.main.crearTablero(self, self.screen, tamaño, matrizUsuario, matrizSolucion, pistas)
+        self.main.crearTablero(self, self.screen, self.size, self.matrizUsuario, self.matrizSolucion, self.nombre, self.pistas)
         self.main.cambiarEtapa(self.main.Etapa.TABLERO)
         

@@ -11,7 +11,8 @@ class Tablero():
     # matrizValoresBloques: contiene los valores de las columnas y filas para saber que boton esta marcado
     # matrizIndices: contiene los valores de los indices que indican los cuadros a marcar para resolver el puzzle
 
-    def __init__(self, main, nivel, screen, blockCant, matrizValoresBloques, matrizSolucion, pistas):
+    def __init__(self, main, nivel, screen, blockCant, matrizValoresBloques, matrizSolucion, nombre, pistas):
+      
         self.main = main
         self.screen = screen
         self.nivel = nivel
@@ -20,6 +21,7 @@ class Tablero():
         self.matrizSolucion = matrizSolucion
         self.pistas = pistas
         self.grilla = Grid(blockCant, matrizValoresBloques, matrizSolucion)
+        self.nombre = nombre
 
         self.dibujarInicio = True # variable para dibujar una vez la grilla al meterse al tablero
 
@@ -193,11 +195,14 @@ class Tablero():
         
         # dibujar mensaje       
         pygame.font.init()
-        mensajeRect = pygame.Rect(((WINDOW_WIDTH - 20)//2 - 200, (WINDOW_HEIGHT -20)//2 - 380, 400, 300))
+        mensajeRect = pygame.Rect(((WINDOW_WIDTH - 20)//2 - 195, (WINDOW_HEIGHT -20)//2 - 380, 400, 300))
         fontMensaje = pygame.font.SysFont("Console", 60)
         fontMensaje.set_bold(True)
 
-        
+        fontNombre = pygame.font.SysFont("Console", 40)
+        nombreRect = pygame.Rect(((WINDOW_WIDTH - 20)//2 - 180, (WINDOW_HEIGHT -20)//2 - 320, 400, 300))
+        nombreText =  fontNombre.render(f'"{self.nombre}"', True, DARK_BLUE)
+
         # crear animacion 
         if self.contadorPuzleCompletado % 2 == 0:
             mensaje1 = fontMensaje.render("¡¡HAS GANADO!!", True, DARK_BLUE)
@@ -210,8 +215,12 @@ class Tablero():
         mensaje2Rect = mensaje1.get_rect(center = mensajeRect.center) 
         mensaje2Rect.x = mensaje2Rect.x + 6
         mensaje2Rect.y = mensaje2Rect.y + 6    
+
+        nombreCenteredRect = nombreText.get_rect(center = nombreRect.center)
+
         surface.blit(mensaje1, mensaje1Rect)
         surface.blit(mensaje2, mensaje2Rect)
+        surface.blit(nombreText, nombreCenteredRect)
         self.screen.blit(surface, (10,10))
         pygame.display.update()
 

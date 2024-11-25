@@ -244,8 +244,22 @@ class CrearPuzle():
 
         for x in range(0, self.blockCant):     # filas
 
+            if x % 5 == 0 and x != 0: # lineas gruesas verticales
+                x_pos = ( x*(self.blockSize + 1) + GRID_MARGIN*(x + 1) -2, 0)
+                #y_pos = ( x*(self.blockSize + 1) + GRID_MARGIN*(x + 1) -2, self.grillaSize - 2)
+                y_pos = ( x*(self.blockSize + 1) + GRID_MARGIN*(x + 1) -2, self.blockCant*(self.blockSize + 1) + GRID_MARGIN*(self.blockCant + 1) - 2)
+                pygame.draw.line(grilla, (14, 13, 17 ),  x_pos, y_pos, 1)
+
+
+
             for y in range(0, self.blockCant): # columnas
                 
+                if y % 5 == 0 and y != 0:
+                    x_pos = (0, y*(self.blockSize + 1) + GRID_MARGIN*(y + 1) - 2)
+                    #y_pos = (self.grillaSize - 2, y*(self.blockSize + 1) + GRID_MARGIN*(y + 1) - 2)
+                    y_pos = (self.blockCant*(self.blockSize + 1) + GRID_MARGIN*(self.blockCant + 1) - 2 - 2, y*(self.blockSize + 1) + GRID_MARGIN*(y + 1) - 2)
+                    pygame.draw.line(grilla, (14, 13, 17), x_pos, y_pos, 1)
+
                 # dibujar bloques
                 button = self.matrizBloques[x][y]
                 button.draw(grilla)

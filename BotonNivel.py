@@ -10,8 +10,7 @@ class BotonNivel():
         self.rect = rect
         self.id = archivoId     
         self.lector = Lectura(archivoId)
-        self.size, self.matrizSolucion, self.matrizUsuario, self.completado, self.progreso, self.nombre = self.lector.leer_matriz()
-
+        self.size, self.matrizSolucion, self.matrizUsuario, self.completado, self.progreso, self.nombre, self.pistas = self.lector.leer_matriz()
 
     def draw(self):
         x_pos = self.rect[0]
@@ -72,9 +71,6 @@ class BotonNivel():
         surface.fill(GREEN)
         self.screen.blit(surface, (10, 10))
 
-        ## llamar a funcion para leer matriz de archivo y pasarselo a tablero como argumento.
-
-
-        self.main.crearTablero(self, self.screen, self.size, self.matrizUsuario, self.matrizSolucion, self.nombre)
+        self.main.crearTablero(self, self.screen, self.size, self.matrizUsuario, self.matrizSolucion, self.nombre, self.pistas)
         self.main.cambiarEtapa(self.main.Etapa.TABLERO)
         

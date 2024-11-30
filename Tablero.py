@@ -29,6 +29,7 @@ class Tablero():
         self.puzleCompletado = False
         self.tiempoPuzleCompletado = 0
         self.contadorPuzleCompletado = 0
+        self.porcentajestr = "{:.0f}%".format((self.grilla.getPorcentajeCompletado(self.grilla.getMatrizTranspuesta(self.matrizValoresBloques), self.matrizSolucion))*100)
         
     # metodo para ejecutar la etapa del tablero
     def etapaTablero(self):
@@ -86,10 +87,14 @@ class Tablero():
                             self.matrizValoresBloques[columna][fila] = 1
                             self.puzleCompletado = self.grilla.comprobarSolucionTablero(self.grilla.getMatrizTranspuesta(self.matrizValoresBloques)) # Comprobamos si al marcarlo se resuelve el tablero
                             self.grilla.comprobarTachar(fila, columna)
-                       
+                            self.porcentajestr = "{:.0f}%".format((self.grilla.getPorcentajeCompletado(self.grilla.getMatrizTranspuesta(self.matrizValoresBloques), self.matrizSolucion))*100)
+                            self.drawPorcentaje()
+                            
                             self.puzleCompletado = self.grilla.comprobarSolucionTablero(self.grilla.getMatrizTranspuesta(self.matrizValoresBloques)) # Comprobamos si al marcarlo se resuelve el tablero
                             self.grilla.comprobarTachar(fila, columna)
-                       
+                            self.porcentajestr = "{:.0f}%".format((self.grilla.getPorcentajeCompletado(self.grilla.getMatrizTranspuesta(self.matrizValoresBloques), self.matrizSolucion))*100)
+                            self.drawPorcentaje()
+                            
                         elif pygame.mouse.get_pressed()[2] == 1:
                             self.matrizValoresBloques[columna][fila] = 2
 
@@ -98,11 +103,13 @@ class Tablero():
                         self.matrizValoresBloques[columna][fila] = 0  # si esta marcado desmarcarlo
                         self.puzzleCompletado = self.grilla.comprobarSolucionTablero(self.grilla.getMatrizTranspuesta(self.matrizValoresBloques)) # Comprobamos si al desmarcarlo se resuelve el tablero
                         self.grilla.comprobarTachar(fila, columna)
-
+                        self.porcentajestr = "{:.0f}%".format((self.grilla.getPorcentajeCompletado(self.grilla.getMatrizTranspuesta(self.matrizValoresBloques), self.matrizSolucion))*100)
+                        self.drawPorcentaje()
                 
                         self.puzzleCompletado = self.grilla.comprobarSolucionTablero(self.grilla.getMatrizTranspuesta(self.matrizValoresBloques)) # Comprobamos si al desmarcarlo se resuelve el tablero
                         self.grilla.comprobarTachar(fila, columna)
-
+                        self.porcentajestr = "{:.0f}%".format((self.grilla.getPorcentajeCompletado(self.grilla.getMatrizTranspuesta(self.matrizValoresBloques), self.matrizSolucion))*100)
+                        self.drawPorcentaje()
                 
                 # funcion para salir del tablero
                 elif pos[0] > 33 and pos[0] < 95  and pos[1] > 25 and pos[1] < 65:
@@ -129,6 +136,8 @@ class Tablero():
                     if self.pistas > 0:
                         self.grilla.getPista()
                         self.puzleCompletado = self.grilla.comprobarSolucionTablero(self.grilla.getMatrizTranspuesta(self.matrizValoresBloques))
+                        self.porcentajestr = "{:.0f}%".format((self.grilla.getPorcentajeCompletado(self.grilla.getMatrizTranspuesta(self.matrizValoresBloques), self.matrizSolucion))*100)
+                        self.drawPorcentaje()
                         if self.puzleCompletado == True:
                             self.ejecutarPuzleCompletado
                         self.pistas -= 1
@@ -163,8 +172,16 @@ class Tablero():
         # pygame.draw.rect(self.screen, BEIGE, (33, 110, 240,100),0)
         self.screen.blit(explicacion1,(42, 120))
         self.screen.blit(explicacion2,(45, 140))
-        self.screen.blit(explicacion3,(53, 480))
-        self.screen.blit(explicacion4,(128, 490))
+        self.screen.blit(explicacion3,(53, 500))
+        self.screen.blit(explicacion4,(128, 510))
+        self.drawPorcentaje()
+        
+    def drawPorcentaje(self):
+        pygame.draw.rect(self.screen, GREEN, (42, 450, 250, 20), 0)
+        pygame.font.init()
+        fontExplicacion = pygame.font.SysFont("Console", 14)
+        porcentaje = fontExplicacion.render("Porcentaje completado: " + self.porcentajestr, True, DARK_BLUE)
+        self.screen.blit(porcentaje,(42, 450))
 
     def ejecutarPuzleCompletado(self):
 

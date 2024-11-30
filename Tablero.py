@@ -121,9 +121,11 @@ class Tablero():
                         self.pistas = 3
                     elif self.blockCant == 20:
                         self.pistas = 5
+                    self.porcentajestr = "{:.0f}%".format((self.grilla.getPorcentajeCompletado(self.grilla.getMatrizTranspuesta(self.matrizValoresBloques), self.matrizSolucion))*100)
+                    self.drawPorcentaje()
                 
                 # funcion para obtener una pista
-                elif pos[0] > 250 and pos[0] < 320 and pos[1] > 25 and pos[1] < 65:
+                elif pos[0] > 240 and pos[0] < 350 and pos[1] > 25 and pos[1] < 65:
                     
                     if self.pistas > 0:
                         pistaUsada = self.grilla.getPista()

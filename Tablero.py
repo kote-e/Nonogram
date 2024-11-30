@@ -24,7 +24,7 @@ class Tablero():
         self.nombre = nombre
 
         self.dibujarInicio = True # variable para dibujar una vez la grilla al meterse al tablero
-
+        self.dibujarNuevamenteEnSiguienteClick = False # variable para redibujar la grilla en el siguiente click
         # variables para calcular tiempo en pantalla de puzle completado
         self.puzleCompletado = False
         self.tiempoPuzleCompletado = 0
@@ -55,10 +55,13 @@ class Tablero():
                 sys.exit()
 
             elif event.type ==  pygame.MOUSEBUTTONDOWN:
-
+                
+                pistaUsada = None
                 pos = pygame.mouse.get_pos()
                 grillaPos = self.grilla.getGridPos()
                 grillaSize = self.grilla.getGridSize()
+                        
+               
                 # si esta dentro de la grilla
                 if ( grillaPos[0] < pos[0] < grillaPos[0] + grillaSize) and (grillaPos[1] < pos[1] < grillaPos[1] + grillaSize): 
                  
@@ -68,19 +71,6 @@ class Tablero():
                     columna = col if col < self.blockCant else col - 1
                     fila = fi if fi < self.blockCant else fi - 1
                         
-                        
-                grillaSize = self.grilla.getGridSize()
-                # si esta dentro de la grilla
-                if ( grillaPos[0] < pos[0] < grillaPos[0] + grillaSize) and (grillaPos[1] < pos[1] < grillaPos[1] + grillaSize): 
-                 
-                    col = int((pos[0] - grillaPos[0]) // (self.grilla.getGridSize() // self.blockCant))
-                    fi = int((pos[1] - grillaPos[1]) // (self.grilla.getGridSize() // self.blockCant))
-                
-                    columna = col if col < self.blockCant else col - 1
-                    fila = fi if fi < self.blockCant else fi - 1
-                        
-                        
-                    
                     if matrizValoresBloques[columna][fila] == 0:
                     
                         if pygame.mouse.get_pressed()[0] == 1:   # si no esta marcado marcarlo con value
@@ -116,11 +106,12 @@ class Tablero():
                     self.dibujarInicio = True
                     self.nivel.lector.guardar_matriz(self.matrizValoresBloques, self.puzleCompletado, True, self.pistas)
                     self.nivel.actualizarProgresoCompletado(self.puzleCompletado, True)
+                    # self.nivel.actualizarMatriz(self.matrizValoresBloques)
+                    # self.nivel.actualizarPistas(self.pistas)
                     self.main.cambiarEtapa(self.main.Etapa.NIVELES)
 
 
                 # funcion para resetear el tablero
-              
                 elif pos[0] > 110 and pos[0] < 200 and pos[1] > 25 and pos[1] < 65:
                     self.matrizValoresBloques = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
                     self.grilla = Grid(self.blockCant, self.matrizValoresBloques, self.grilla.matrizSolucion)
@@ -133,22 +124,29 @@ class Tablero():
                 
                 # funcion para obtener una pista
                 elif pos[0] > 250 and pos[0] < 320 and pos[1] > 25 and pos[1] < 65:
+                    
                     if self.pistas > 0:
-                        self.grilla.getPista()
+                        pistaUsada = self.grilla.getPista()
+                    
                         self.puzleCompletado = self.grilla.comprobarSolucionTablero(self.grilla.getMatrizTranspuesta(self.matrizValoresBloques))
                         self.porcentajestr = "{:.0f}%".format((self.grilla.getPorcentajeCompletado(self.grilla.getMatrizTranspuesta(self.matrizValoresBloques), self.matrizSolucion))*100)
                         self.drawPorcentaje()
+
                         if self.puzleCompletado == True:
                             self.ejecutarPuzleCompletado
                         self.pistas -= 1
-                self.grilla.drawGrid(self.screen)  # redibujar la grilla
-
-
-    # metodo para dibujar la etapa del tablero
+                
+                if self.dibujarNuevamenteEnSiguienteClick:
+                    self.dibujarInicio = True
+                    self.dibujarNuevamenteEnSiguienteClick = False
+                # metodo para dibujar la etapa del tablero
                 self.grilla = Grid(self.blockCant, self.matrizValoresBloques, self.grilla.matrizSolucion)
-
-
                 self.grilla.drawGrid(self.screen)  # redibujar la grilla
+
+                if pistaUsada != None:
+                    self.animarPista(pistaUsada)
+                    self.dibujarNuevamenteEnSiguienteClick = True
+                    
 
 
     # metodo para dibujar la etapa del tablero
@@ -258,4 +256,6 @@ class Tablero():
             self.contadorPuzleCompletado = 0
             self.tiempoPuzleCompletado = 0
 
-       
+    def animarPista(self, coordenadas):
+            
+       pass

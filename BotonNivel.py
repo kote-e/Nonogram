@@ -59,17 +59,25 @@ class BotonNivel():
             self.screen.blit(subText, subTextRect)
 
         
-
     def actualizarProgresoCompletado(self, completado, progreso):
             self.completado = completado
             self.progreso = progreso
 
+    # def actualizarMatriz(self, matriz):
+    #     self.matrizUsuario = matriz
+    
+    # def actualizarPistas(self, pistas):
+    #     self.pistas = pistas
 
     def cargarTablero(self):
         self.screen.fill(DARK_BLUE)
         surface = pygame.Surface((WINDOW_WIDTH - 20, WINDOW_HEIGHT - 20))
         surface.fill(GREEN)
         self.screen.blit(surface, (10, 10))
+
+        # leer info de archivo
+        self.size, self.matrizSolucion, self.matrizUsuario, self.completado, self.progreso, self.nombre, self.pistas = self.lector.leer_matriz()
+
 
         self.main.crearTablero(self, self.screen, self.size, self.matrizUsuario, self.matrizSolucion, self.nombre, self.pistas)
         self.main.cambiarEtapa(self.main.Etapa.TABLERO)

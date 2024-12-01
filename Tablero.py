@@ -25,17 +25,27 @@ class Tablero():
 
         self.dibujarInicio = True # variable para dibujar una vez la grilla al meterse al tablero
         self.dibujarNuevamenteEnSiguienteClick = False # variable para redibujar la grilla en el siguiente click
+
         # variables para calcular tiempo en pantalla de puzle completado
         self.puzleCompletado = False
         self.tiempoPuzleCompletado = 0
         self.contadorPuzleCompletado = 0
         
+        # variables para animar pista
+        self.animandoPista = False
+        self.coordenadasPista = None
+        self.tiempoInicioPista = 0
+        self.contadorTiempoPista = 0
+
     # metodo para ejecutar la etapa del tablero
     def etapaTablero(self):
 
         if self.dibujarInicio:
             self.grilla.drawGrid(self.screen)
             self.dibujarInicio = False
+
+        if self.animandoPista == True:
+            self.animarPista(self.coordenadasPista)
         
         if not self.puzleCompletado:
             self.draw()
@@ -135,11 +145,13 @@ class Tablero():
                 self.grilla.drawGrid(self.screen)  # redibujar la grilla
 
                 if pistaUsada != None:
+
+                    if self.animandoPista == True:
+                        self.resetVariablesAnimacionPista()
+
                     self.animarPista(pistaUsada)
-                    self.dibujarNuevamenteEnSiguienteClick = True
                     
-
-
+                    
     # metodo para dibujar la etapa del tablero
     def draw(self):
 
@@ -164,6 +176,7 @@ class Tablero():
         self.screen.blit(explicacion3,(53, 480))
         self.screen.blit(explicacion4,(128, 490))
 
+    # metodo para ejecutar la etapa de puzle completado
     def ejecutarPuzleCompletado(self):
 
         # manejar salida del juego
@@ -239,6 +252,56 @@ class Tablero():
             self.contadorPuzleCompletado = 0
             self.tiempoPuzleCompletado = 0
 
+    # metodo para crear una animacion de brillos en la pista
     def animarPista(self, coordenadas):
+
+        if self.puzleCompletado == True:  # si el puzle esta completado no hacer nada
+            self.resetVariablesAnimacionPista()
+            return
+        
+        if self.animandoPista == False:
+            self.animandoPista = True
+            self.coordenadasPista = coordenadas
+            self.tiempoInicioPista = pygame.time.get_ticks()
+            self.contadorTiempoPista = 0
+
+        # cargar imagenes
+        image_sprite = [pygame.image.load("brillos-pista-1.png"), pygame.image.load("brillos-pista-2.png")]
+        
+        if self.contadorTiempoPista % 2 == 0:
+            image = image_sprite[1]
+        else:
+            image = image_sprite[0]
             
-       pass
+        blockSize = self.grilla.getGridSize() // self.blockCant
+        image = pygame.transform.scale(image, ((3*blockSize) - blockSize/self.blockCant, (3*blockSize) - blockSize/self.blockCant))
+        adjust = blockSize
+
+        coordenadasAjustadas = self.grilla.getCoordenadasBloque(coordenadas)
+        coordenadasAjustadas = (self.grilla.getGridPos()[0] + coordenadasAjustadas[0] - adjust,  self.grilla.getGridPos()[1] + coordenadasAjustadas[1] - adjust)
+        self.screen.blit(image, coordenadasAjustadas)
+    
+        # actualizar variables de tiempo
+        currentTime = pygame.time.get_ticks()    
+        
+        if (currentTime - self.tiempoInicioPista) > 500:  # si ha pasado medio segundo desde el ultimo cambio de color
+            self.tiempoInicioPista = currentTime
+            self.contadorTiempoPista += 1
+
+            self.grilla.drawGrid(self.screen)
+            x_pos = (WINDOW_WIDTH - 6, 0)
+            y_pos = (WINDOW_WIDTH - 6, WINDOW_HEIGHT)
+            pygame.draw.line(self.screen, DARK_BLUE,  x_pos, y_pos, 10)
+
+
+        if  self.contadorTiempoPista > 4:  # si han pasado 2 segundos terminar
+            # reiniciar variables
+            self.grilla.drawGrid(self.screen)
+            self.resetVariablesAnimacionPista()
+
+    # metodo para reiniciar las variables de la animacion de la pista
+    def resetVariablesAnimacionPista(self):
+        self.animandoPista = False
+        self.coordenadasPista = None
+        self.tiempoInicioPista = 0
+        self.contadorTiempoPista = 0

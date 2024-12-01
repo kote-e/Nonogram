@@ -3,7 +3,7 @@ from constantes import *
 
 class BotonBloque():
     def __init__(self, rect, fila, columna, matrizValoresBloques):
-        self.rect = rect
+        self.rect = rect                     # pygame.Rect(x, y, width, height)
         self.fila = fila
         self.columna = columna
         self.matrizValoresBloques = matrizValoresBloques
@@ -27,6 +27,8 @@ class BotonBloque():
 
         pygame.display.update()
        
+    def getRect(self):
+        return self.rect
 
 
     

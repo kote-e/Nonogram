@@ -23,10 +23,9 @@ class Grid():
         
         matriz = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
 
-        self.blockSize = int((self.grillaSize - GRID_MARGIN*self.blockCant) / self.blockCant  - 1) 
+        self.blockSize = int((self.grillaSize - GRID_MARGIN*self.blockCant) / self.blockCant - 1) 
         step = self.blockSize + GRID_MARGIN
         
-
         for x in range(0, self.blockCant):
             for y in range(0, self.blockCant):
 
@@ -40,11 +39,51 @@ class Grid():
 
                 
         return matriz
-                
+
+    def drawIndices(self, screen):
+        superficieColumnas = pygame.Surface((410, 95))
+        superficieFilas = pygame.Surface((95, 410))
+
+        superficieColumnas.fill(GREEN)
+        superficieFilas.fill(GREEN)
+
+        pygame.font.init()
+        numberSize = 14
+        if self.blockCant == 20:
+            numberSize = 12
+        
+        font = pygame.font.SysFont("Comic Sans", numberSize)
+        font.set_bold(True)
+        
+        paddingColumna = GRID_MARGIN + self.blockSize//2 - numberSize//2
+        paddingFila = self.blockSize//2 - numberSize//2
+
+        for x in range(0, self.blockCant):     # filas
+
+            # dibujar fondo indices
+            pygame.draw.rect(superficieColumnas, DARK_BLUE, (x*(self.blockSize + 1) + GRID_MARGIN*(x + 1), 0, self.blockSize, 95), 0)
+            pygame.draw.rect(superficieFilas, DARK_BLUE, (0, x*(self.blockSize + 1) + GRID_MARGIN*(x + 1), 115, self.blockSize), 0) 
+
+            for y in range(0, self.blockCant):
+
+                if y < len(self.matrizIndices[0][x]):
+                    text = font.render(str(self.matrizIndices[0][x][y]), True, BEIGE)
+                    superficieColumnas.blit(text, (paddingColumna + x*(self.blockSize + 1) + GRID_MARGIN*(x + 1), 6 + (numberSize + 3)*y))
+
+                if y < len(self.matrizIndices[1][x]):
+                    text = font.render(str(self.matrizIndices[1][x][y]), True, BEIGE)
+                    superficieFilas.blit(text, (10 + (numberSize + 3)*y , paddingFila + x*(self.blockSize + 1) + GRID_MARGIN*(x + 1)))
+
+        screen.blit(superficieColumnas, (self.grillaPos[0], self.grillaPos[1] - 105))
+        screen.blit(superficieFilas, (self.grillaPos[0] - 105, self.grillaPos[1]))
+
 
     def drawGrid(self, screen):
         grilla = pygame.Surface((self.grillaSize, self.grillaSize))
         grilla.fill(GREEN)
+        
+        superficieGrilla = pygame.Surface((self.grillaSize + 35, self.grillaSize + 20))
+        superficieGrilla.fill(GREEN)
 
         superficieImagen = pygame.Surface((240, 240))
         superficieImagenBorde = pygame.Surface((250, 250))
@@ -74,10 +113,8 @@ class Grid():
 
             if x % 5 == 0 and x != 0: # lineas gruesas verticales
                 x_pos = ( x*(self.blockSize + 1) + GRID_MARGIN*(x + 1) -2, 0)
-                #y_pos = ( x*(self.blockSize + 1) + GRID_MARGIN*(x + 1) -2, self.grillaSize - 2)
                 y_pos = ( x*(self.blockSize + 1) + GRID_MARGIN*(x + 1) -2, self.blockCant*(self.blockSize + 1) + GRID_MARGIN*(self.blockCant + 1) - 2)
                 pygame.draw.line(grilla, (14, 13, 17 ),  x_pos, y_pos, 1)
-
 
             for y in range(0, self.blockCant): # columnas
 
@@ -112,9 +149,10 @@ class Grid():
                     pygame.draw.rect(superficieImagen, DARK_BLUE, (bloqueImagenSize*x, bloqueImagenSize*y, bloqueImagenSize,bloqueImagenSize),0)
 
 
+        screen.blit(superficieGrilla, (self.grillaPos[0] - 10, self.grillaPos[1] - 10))
+        screen.blit(grilla, self.grillaPos)
         screen.blit(superficieColumnas, (self.grillaPos[0], self.grillaPos[1] - 105))
         screen.blit(superficieFilas, (self.grillaPos[0] - 105, self.grillaPos[1]))
-        screen.blit(grilla, self.grillaPos)
         screen.blit(superficieImagenBorde, (30, 195))
         screen.blit(superficieImagen, (35, 200))
 
@@ -139,6 +177,7 @@ class Grid():
             self.tacharFila(numFila)
         if ([self.getMatrizTranspuesta(self.matrizValoresBloques)[i][numColumna] for i in range(self.blockCant)] == [self.matrizSolucion[i][numColumna] for i in range(self.blockCant)]):
             self.tacharColumna(numColumna)
+
     def listaAIndice(self,fila):
         indices = []
         count = 0
@@ -166,6 +205,7 @@ class Grid():
         return count
     def getPorcentajeCompletado(self, matriz, matrizSolucion):
         return self.contarBloquesIguales(matriz, matrizSolucion)/self.contarBloquesMarcados(matrizSolucion)
+    
     def getPista(self):
         if self.getMatrizTranspuesta(self.matrizValoresBloques) != self.matrizSolucion:
             while True:
@@ -175,7 +215,10 @@ class Grid():
                     self.matrizValoresBloques[rand_y][rand_x] = 1
                     self.comprobarTachar(rand_x, rand_y)
                     break
-    
+
+            return (rand_x, rand_y)
+        return None
+        
     def getBlockSize(self):
         return self.blockSize   
      
@@ -202,3 +245,9 @@ class Grid():
             columna = [self.matrizSolucion[j][i] for j in range(self.blockCant)]
             indicesColumnas.append(self.listaAIndice(columna))
         return [indicesColumnas, indicesFilas]
+    
+    def getCoordenadasBloque(self, coord):
+        x = coord[0]
+        y = coord[1]
+        # filas y columnas
+        return self.matrizBloques[y][x].getRect().topleft

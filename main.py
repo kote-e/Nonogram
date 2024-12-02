@@ -13,6 +13,7 @@ from CrearPuzle import CrearPuzle
 from CrearPuzle import CrearPuzle
 from Musica import Musica
 
+
 # Valores temporales para probar el tablero
 
 class Main():

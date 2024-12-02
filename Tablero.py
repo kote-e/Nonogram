@@ -12,9 +12,9 @@ class Tablero:
         self.blockCant = blockCant
         self.matrizValoresBloques = matrizValoresBloques
         self.matrizSolucion = matrizSolucion
-        self.pistas = pistas
+        self.pistas = pistas  # Recibido desde BotonNivel
         self.grilla = Grid(blockCant, matrizValoresBloques, matrizSolucion)
-        self.nombre = nombre
+        self.nombre = nombre  # Recibido desde BotonNivel
 
         self.dibujarInicio = True
         self.dibujarNuevamenteEnSiguienteClick = False

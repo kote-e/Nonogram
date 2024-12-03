@@ -141,6 +141,106 @@ class CrearPuzle:
             text = fontSelectSize.render(opciones[i], True, BEIGE)
             self.screen.blit(text, text.get_rect(center=rect.center))
 
+
+        text5x5Rect = text5x5.get_rect(center = self.btnSizeSelector[0].center)
+        text10x10Rect = text10x10.get_rect(center = self.btnSizeSelector[1].center)
+        text20x20Rect = text20x20.get_rect(center = self.btnSizeSelector[2].center)
+
+        self.screen.blit(text5x5, text5x5Rect)
+        self.screen.blit(text10x10, text10x10Rect)
+        self.screen.blit(text20x20, text20x20Rect)
+
+    def writeFile(self):
+
+        name = self.userText.lower()
+        name = name.replace(" ", "_")
+
+        f = open(f"./Puzles/{self.blockCant}_{name}.txt", "w")
+        f.write("False\n") #puzle Completado
+        f.write("False\n") #puzle en progreso
+        f.write(f"{self.blockCant}\n")
+        if self.blockCant == 5:
+            f.write("1\n")
+        elif self.blockCant == 10:
+            f.write("3\n")
+        elif self.blockCant == 20:
+            f.write("5\n")
+
+        matrizTranspuesta = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
+        for i in range(self.blockCant):
+            for j in range(self.blockCant):
+                matrizTranspuesta[j][i] = self.matrizValoresBloques[i][j]
+
+        for i in range(self.blockCant):
+            for j in range(self.blockCant):
+                f.write(f"{matrizTranspuesta[i][j]} ")
+
+            f.write("\n")
+
+        f.close()
+
+        self.matrizValoresBloques = [[0 for i in range(self.blockCant)] for j in range(self.blockCant)]
+        self.matrizBloques = self.inicializarMatrizBloques(self.matrizValoresBloques)
+        self.userText = ''
+
+    def drawGrid(self, screen):
+
+
+        grilla = pygame.Surface((self.grillaSize, self.grillaSize))
+        grilla.fill(GREEN)
+
+        superficieImagen = pygame.Surface((240, 240))
+        superficieImagenBorde = pygame.Surface((250, 250))
+
+        superficieImagen.fill(BEIGE)
+        superficieImagenBorde.fill(DARK_BEIGE)
+
+
+        for x in range(0, self.blockCant):     # filas
+
+            if x % 5 == 0 and x != 0: # lineas gruesas verticales
+                x_pos = ( x*(self.blockSize + 1) + GRID_MARGIN*(x + 1) -2, 0)
+                #y_pos = ( x*(self.blockSize + 1) + GRID_MARGIN*(x + 1) -2, self.grillaSize - 2)
+                y_pos = ( x*(self.blockSize + 1) + GRID_MARGIN*(x + 1) -2, self.blockCant*(self.blockSize + 1) + GRID_MARGIN*(self.blockCant + 1) - 2)
+                pygame.draw.line(grilla, (14, 13, 17 ),  x_pos, y_pos, 1)
+
+
+
+            for y in range(0, self.blockCant): # columnas
+
+                if y % 5 == 0 and y != 0:
+                    x_pos = (0, y*(self.blockSize + 1) + GRID_MARGIN*(y + 1) - 2)
+                    #y_pos = (self.grillaSize - 2, y*(self.blockSize + 1) + GRID_MARGIN*(y + 1) - 2)
+                    y_pos = (self.blockCant*(self.blockSize + 1) + GRID_MARGIN*(self.blockCant + 1) - 2 - 2, y*(self.blockSize + 1) + GRID_MARGIN*(y + 1) - 2)
+                    pygame.draw.line(grilla, (14, 13, 17), x_pos, y_pos, 1)
+
+                # dibujar bloques
+                button = self.matrizBloques[x][y]
+                button.draw(grilla)
+
+                bloqueImagenSize = 240//self.blockCant
+
+                if self.matrizValoresBloques[x][y] == 1:
+                    pygame.draw.rect(superficieImagen, DARK_BLUE, (bloqueImagenSize*x, bloqueImagenSize*y, bloqueImagenSize,bloqueImagenSize),0)
+
+
+        screen.blit(grilla, self.grillaPos)
+        screen.blit(superficieImagenBorde, (50, 155))
+        screen.blit(superficieImagen, (55, 160))
+
+        # dibujar bordes de la grilla
+
+
+        pygame.draw.lines(self.screen, DARK_BLUE, True, [(self.grillaPos[0] - 11, self.grillaPos[1] - 6), (self.grillaPos[0] + self.grillaSize + 1, self.grillaPos[1] - 6)], 10)
+
+        pygame.draw.lines(self.screen, DARK_BLUE, True, [(self.grillaPos[0] - 11, self.grillaPos[1] + self.grillaSize - 4), (self.grillaPos[0] + self.grillaSize + 1, self.grillaPos[1] + self.grillaSize - 4)], 10)
+
+
+        pygame.draw.lines(self.screen, DARK_BLUE, True, [(self.grillaPos[0] - 7, self.grillaPos[1] - 6), (self.grillaPos[0] - 7, self.grillaPos[1] + self.grillaSize - 3) ], 10)
+
+        pygame.draw.lines(self.screen, DARK_BLUE, True, [(self.grillaPos[0] + self.grillaSize - 4, self.grillaPos[1] - 5), (self.grillaPos[0] + self.grillaSize - 4, self.grillaPos[1] + self.grillaSize - 5)], 10)
+
+
     def inicializarMatrizBloques(self, matrizValoresBloques):
         matriz = [[0 for _ in range(self.blockCant)] for _ in range(self.blockCant)]
         self.blockSize = int((self.grillaSize - GRID_MARGIN * self.blockCant) / self.blockCant - 1)

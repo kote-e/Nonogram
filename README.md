@@ -22,7 +22,7 @@ Las celdas se pueden marcar haciendo clic izquierdo y tacharse con clic derecho.
 El juego verifica si el puzle está completo automáticamente.
 
 ## UML
-![img.png](img.png)
+![UML.png](UML.png)
 
 [UML Nonogram](https://lucid.app/lucidchart/eee06729-f13f-48ba-8494-0fed7540034d/edit?viewport_loc=510%2C10%2C3169%2C1623%2CHWEp-vi-RSFO&invitationId=inv_c5365d41-b2af-44b4-a6f5-0860fdcba8db)
 

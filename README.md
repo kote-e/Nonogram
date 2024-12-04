@@ -11,7 +11,11 @@ Este proyecto es un juego de Nonogram, el objetivo principal del proyecto es cre
 
 ## Uso
 
-Para ejecutar el juego abrir el archivo: __*main.py*__
+
+Para ejecutar el juego primero asegurarse de tener las librerías requeridas para el programa, que están especificadas en el archivo requirements.txt. Teniendo Python, se puede ejecutar el comando __*"pip install -r requirements.txt"*__ para instalarlas rápidamente. 
+
+Luego de esto basta con abrir el archivo: __*main.py*__
+
 
 Al iniciar el juego, se presentará un menú donde puedes seleccionar diferentes niveles o crear tu propio puzle.
 Las celdas se pueden marcar haciendo clic izquierdo y tacharse con clic derecho.

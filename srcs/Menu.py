@@ -1,5 +1,5 @@
 import pygame, sys
-from constantes import *
+from srcs.constantes import *
 
 
 class Menu():

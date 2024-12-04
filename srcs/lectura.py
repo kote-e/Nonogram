@@ -1,9 +1,9 @@
 import pygame, sys
 
 from traitlets import This
-from constantes import *
+from srcs.constantes import *
 from enum import Enum
-from Tablero import Tablero
+from srcs.Tablero import Tablero
 import os
 
 

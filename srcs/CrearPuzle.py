@@ -1,9 +1,9 @@
 
 from time import sleep
 import pygame, sys
-from BotonBloque import BotonBloque
-from constantes import *
-from BotonTablero import BotonTablero
+from srcs.BotonBloque import BotonBloque
+from srcs.constantes import *
+from srcs.BotonTablero import BotonTablero
 
 # Clase para dibujar la etapa donde se resuelve el puzle
 

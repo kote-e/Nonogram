@@ -1,6 +1,6 @@
 import pygame
-from constantes import *
-from lectura import Lectura
+from srcs.constantes import *
+from srcs.lectura import Lectura
 
 class BotonNivel():
     

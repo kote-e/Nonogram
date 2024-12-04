@@ -1,6 +1,6 @@
 import pygame, os, sys
-from constantes import *
-from BotonNivel import BotonNivel
+from srcs.constantes import *
+from srcs.BotonNivel import BotonNivel
 
 class Niveles():
 

@@ -1,9 +1,9 @@
 from time import sleep
 from time import sleep
 import pygame, sys
-from constantes import *
-from Grid import Grid
-from BotonTablero import BotonTablero
+from srcs.constantes import *
+from srcs.Grid import Grid
+from srcs.BotonTablero import BotonTablero
 
 # Clase para dibujar la etapa donde se resuelve el puzle
 class Tablero():
@@ -285,7 +285,7 @@ class Tablero():
             self.contadorTiempoPista = 0
 
         # cargar imagenes
-        image_sprite = [pygame.image.load("brillos-pista-1.png"), pygame.image.load("brillos-pista-2.png")]
+        image_sprite = [pygame.image.load("./srcs/media/brillos-pista-1.png"), pygame.image.load("./srcs/media/brillos-pista-2.png")]
         
         if self.contadorTiempoPista % 2 == 0:
             image = image_sprite[1]

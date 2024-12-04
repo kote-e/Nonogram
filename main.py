@@ -2,16 +2,18 @@
 import pygame, sys
 
 from traitlets import This
-from constantes import *
+from srcs.constantes import *
 from enum import Enum
-from Menu import Menu
-from Niveles import Niveles
-from Menu import Menu
-from Niveles import Niveles
-from Tablero import Tablero
-from CrearPuzle import CrearPuzle
-from CrearPuzle import CrearPuzle
-from Musica import Musica
+from srcs.Menu import Menu
+from srcs.Niveles import Niveles
+from srcs.Menu import Menu
+from srcs.Niveles import Niveles
+from srcs.Tablero import Tablero
+from srcs.CrearPuzle import CrearPuzle
+from srcs.CrearPuzle import CrearPuzle
+from srcs.Musica import Musica
+
+from srcs.constantes import *
 
 # Valores temporales para probar el tablero
 
@@ -24,7 +26,7 @@ class Main():
         self.niveles = 0
         self.dibujo = 0
         self.tablero = 0
-        self.musica = Musica("Nonogram/Lost-Woods-Legend-of-Zelda-Ocarina-of-Time-OST-Rema.mp3")
+        self.musica = Musica("./srcs/media/Lost-Woods-Legend-of-Zelda-Ocarina-of-Time-OST-Rema.mp3")
 
     class Etapa(Enum):
      
@@ -50,7 +52,7 @@ class Main():
         jugando = True
         screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
-        programIcon = pygame.image.load('icono_gato.jpg')
+        programIcon = pygame.image.load('./srcs/media/icono_gato.jpg')
         pygame.display.set_icon(programIcon)
 
         self.menu = Menu(self.main, screen)
@@ -69,9 +71,7 @@ class Main():
             
             if self.etapaJuego == self.Etapa.MENU:
                 self.menu.etapaMenu() # eventos, dibujar, actualizar son manejados internamente
-            if self.etapaJuego == self.Etapa.MENU:
-                self.menu.etapaMenu() # eventos, dibujar, actualizar son manejados internamente
-                
+           
             elif self.etapaJuego == self.Etapa.NIVELES:
                 self.niveles.etapaNiveles() # eventos, dibujar, actualizar son manejados internamente
             
@@ -81,10 +81,10 @@ class Main():
             elif self.etapaJuego == self.Etapa.CREAR:
                 self.dibujo.etapaDibujo()
             
-            elif self.etapaJuego == self.Etapa.CREAR:
-                self.dibujo.etapaDibujo()
 
             pygame.display.flip()
+       
+       
         self.musica.detener_musica()
         pygame.quit()
         sys.exit()

@@ -1,6 +1,6 @@
 import pygame, random
-from constantes import *
-from BotonBloque import BotonBloque
+from srcs.constantes import *
+from srcs.BotonBloque import BotonBloque
 
 
 class Grid():

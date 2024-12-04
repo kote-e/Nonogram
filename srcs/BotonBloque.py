@@ -1,5 +1,5 @@
 import pygame
-from constantes import *
+from srcs.constantes import *
 
 class BotonBloque():
     def __init__(self, rect, fila, columna, matrizValoresBloques):

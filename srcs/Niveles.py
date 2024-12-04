@@ -32,7 +32,9 @@ class Niveles():
                     self.listaNiveles.append(f"{root}/{file}")
                     self.cantidadNiveles += 1
 
-        self.listaNiveles.sort()
+        archivos_ordenados = sorted(self.listaNiveles, key=lambda x: int(x.split('/')[2].split('_')[0]))
+    
+        self.listaNiveles = archivos_ordenados
 
 
     # Funcion que crea los botones de los niveles y los agrega a la lista de botones

@@ -1,2 +1,1 @@
-Python=3.9.13
-pygame=2.6.0
+pygame==2.6.0
